@@ -1,5 +1,6 @@
 package info.frederico.mensaviewer
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -8,6 +9,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.os.AsyncTask
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import info.frederico.mensaviewer.helper.Essen
 import org.jsoup.Jsoup
@@ -102,4 +105,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuinflater = menuInflater
+        menuinflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item != null) {
+            when (item.itemId) {
+                R.id.licenses -> {
+                    val intent = Intent(this, LicenseActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
