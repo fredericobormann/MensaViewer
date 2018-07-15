@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
 import android.os.AsyncTask
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -13,6 +15,10 @@ import org.jsoup.select.Elements
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private var essensliste : List<String> = listOf("Essen1", "Essen2", "Essen3")
 
     private var mensa = Mensa.STUDIERENDENHAUS
 
@@ -43,6 +49,19 @@ class MainActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = EssenAdapter(essensliste)
+
+        recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply {
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+
+            // use a linear layout manager
+            layoutManager = viewManager
+
+            // specify an viewAdapter (see also next example)
+            adapter = viewAdapter}
         UpdateMensaPlanTask().execute()
     }
 
@@ -52,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             val bracketRegex = " \\u0028.+?\\u0029 ".toRegex()
             val nestedRegex = "&.+?\\u0029".toRegex()
             val undRegex = "&| +$".toRegex()
-            val doc : Document = Jsoup.connect("https://speiseplan.studierendenwerk-hamburg.de/de/310/2018/99/").get()
+            val doc : Document = Jsoup.connect(mensa.url).get()
             val essen : Elements = doc.select(".dish-description")
             val essenBeschreibung : MutableList<String> = ArrayList<String>()
             for (e in essen){
@@ -71,7 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: List<String>) {
-            message.setText(result.toString())
+            if(viewAdapter is EssenAdapter){
+                val v = viewAdapter as EssenAdapter
+                v.setEssensplan(result)
+            }
             pb_mensaplan.visibility = View.INVISIBLE
         }
     }
