@@ -9,6 +9,7 @@ import android.os.AsyncTask
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import info.frederico.mensaviewer.helper.Essen
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private var essensliste : List<String> = listOf("Essen1", "Essen2", "Essen3")
+    private var essensliste : List<Essen> = ArrayList<Essen>()
 
     private var mensa = Mensa.STUDIERENDENHAUS
 
@@ -65,21 +66,24 @@ class MainActivity : AppCompatActivity() {
         UpdateMensaPlanTask().execute()
     }
 
-    private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<String>>() {
-        override fun doInBackground(vararg p0: Void?): List<String> {
+    private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
+        override fun doInBackground(vararg p0: Void?): List<Essen> {
             val tagsRegex = "<td.*description\"> |<br>|<img.+?>|</td>".toRegex()
             val bracketRegex = " \\u0028.+?\\u0029 ".toRegex()
             val nestedRegex = "&.+?\\u0029".toRegex()
             val undRegex = "&| +$".toRegex()
+            val preisRegex = "\\d+,\\d{2}".toRegex()
             val doc : Document = Jsoup.connect(mensa.url).get()
             val essen : Elements = doc.select(".dish-description")
-            val essenBeschreibung : MutableList<String> = ArrayList<String>()
-            for (e in essen){
-                var essenString = tagsRegex.replace(e.toString(), "")
+            val preis : Elements = doc.select("tr")
+            val essenBeschreibung : MutableList<Essen> = ArrayList<Essen>()
+            for (e in essen.withIndex()){
+                var essenString = tagsRegex.replace(e.value.toString(), "")
                 essenString = bracketRegex.replace(essenString, "&")
                 essenString = nestedRegex.replace(essenString, "")
                 essenString = undRegex.replace(essenString, "")
-                essenBeschreibung.add(essenString)
+                var preisString = preisRegex.find(preis[e.index+1].toString())!!.value
+                essenBeschreibung.add(Essen(essenString, preisString))
             }
             return essenBeschreibung
         }
@@ -89,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             pb_mensaplan.visibility = View.VISIBLE;
         }
 
-        override fun onPostExecute(result: List<String>) {
+        override fun onPostExecute(result: List<Essen>) {
             if(viewAdapter is EssenAdapter){
                 val v = viewAdapter as EssenAdapter
                 v.setEssensplan(result)

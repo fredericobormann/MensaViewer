@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
 import kotlinx.android.synthetic.main.essenseintrag_view.view.*
+import info.frederico.mensaviewer.helper.Essen
 
-class EssenAdapter(private var essensplan: List<String>) :
+class EssenAdapter(private var essensplan: List<Essen>) :
 RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -30,13 +31,14 @@ RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.view.essensTextView.text = essensplan[position]
+        holder.view.essensTextView.text = essensplan[position].bezeichnung
+        holder.view.preisTextView.text = essensplan[position].preis
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = essensplan.size
 
-    fun setEssensplan(newEssensplan : List<String>){
+    fun setEssensplan(newEssensplan : List<Essen>){
         essensplan = newEssensplan
         notifyDataSetChanged()
     }
