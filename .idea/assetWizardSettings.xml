@@ -34,6 +34,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="0d47a1" />
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
                                       <entry key="foregroundImage" value="C:\Users\Frederico Bormann\Downloads\baseline-fastfood-24px.svg" />
                                       <entry key="legacyIconShape" value="CIRCLE" />
