@@ -1,6 +1,10 @@
 package info.frederico.mensaviewer
 
+import android.app.usage.NetworkStatsManager
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -94,6 +98,13 @@ class MainActivity : AppCompatActivity() {
         override fun onPreExecute() {
             super.onPreExecute()
             pb_mensaplan.visibility = View.VISIBLE;
+            val cm = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnected == true
+            if(!isConnected){
+                cancel(true)
+            }
+            tv_error_message_internet.visibility = View.INVISIBLE
         }
 
         override fun onPostExecute(result: List<Essen>) {
@@ -102,6 +113,14 @@ class MainActivity : AppCompatActivity() {
                 v.setEssensplan(result)
             }
             pb_mensaplan.visibility = View.INVISIBLE
+            my_recycler_view.visibility = View.VISIBLE
+        }
+
+        override fun onCancelled() {
+            my_recycler_view.visibility = View.INVISIBLE
+            pb_mensaplan.visibility = View.INVISIBLE
+            tv_error_message_internet.visibility = View.VISIBLE
+            super.onCancelled()
         }
     }
 
