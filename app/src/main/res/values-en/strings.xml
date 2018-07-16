@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mensa Viewer</string>
-    <string name="licenses">Licenses</string>
+        <string name="licenses">Licenses</string>
+    <string name="error_message_internet">Internet connection failed. Sorry!</string>
     <string name="jsoup_license">Developed using jSoup:\njsoup License\n
 The jsoup code-base (including source and compiled packages) are distributed under the open source MIT license as described below.\n\n
 

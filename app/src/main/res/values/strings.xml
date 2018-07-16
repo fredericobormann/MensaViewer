@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Mensa Viewer</string>
-    <string name="title_studierendenhaus">Studierendenhaus</string>
-    <string name="title_informatikum">Informatikum</string>
-    <string name="title_campus">Campus</string>
+    <string name="app_name" translatable="false">Mensa Viewer</string>
+    <string name="title_studierendenhaus" translatable="false">Studierendenhaus</string>
+    <string name="title_informatikum" translatable="false">Informatikum</string>
+    <string name="title_campus" translatable="false">Campus</string>
     <string name="jsoup_license">Entwickelt unter Verwendung von jSoup:\njsoup License\n
 The jsoup code-base (including source and compiled packages) are distributed under the open source MIT license as described below.\n\n
 
@@ -15,4 +15,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 </string>
     <string name="licenses">Lizenzen</string>
+    <string name="error_message_internet">Es konnte keine Verbindung zum Internet hergestellt werden.</string>
 </resources>
