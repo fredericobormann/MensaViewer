@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
 import android.os.AsyncTask
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -70,6 +72,13 @@ class MainActivity : AppCompatActivity() {
 
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter}
+
+        swipe_container.setColorSchemeColors(getColor(R.color.colorAccent), getColor(R.color.colorPrimary), getColor(R.color.secondaryLightColor))
+
+        swipe_container.setOnRefreshListener {
+            UpdateMensaPlanTask().execute()
+        }
+
         UpdateMensaPlanTask().execute()
     }
 
@@ -97,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-            pb_mensaplan.visibility = View.VISIBLE;
+            swipe_container.isRefreshing = true
             val cm = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnected == true
@@ -112,13 +121,13 @@ class MainActivity : AppCompatActivity() {
                 val v = viewAdapter as EssenAdapter
                 v.setEssensplan(result)
             }
-            pb_mensaplan.visibility = View.INVISIBLE
+            swipe_container.isRefreshing = false
             my_recycler_view.visibility = View.VISIBLE
         }
 
         override fun onCancelled() {
             my_recycler_view.visibility = View.INVISIBLE
-            pb_mensaplan.visibility = View.INVISIBLE
+            swipe_container.isRefreshing = false
             tv_error_message_internet.visibility = View.VISIBLE
             super.onCancelled()
         }
