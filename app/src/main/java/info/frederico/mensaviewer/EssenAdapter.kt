@@ -32,7 +32,7 @@ RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.view.essensTextView.text = essensplan[position].bezeichnung
-        holder.view.preisTextView.text = essensplan[position].preis
+        holder.view.preisTextView.text = essensplan[position].studentenPreis
     }
 
     // Return the size of your dataset (invoked by the layout manager)
