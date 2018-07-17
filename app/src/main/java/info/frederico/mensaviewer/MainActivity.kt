@@ -100,9 +100,9 @@ class MainActivity : AppCompatActivity() {
 
                 essenString = bracketRegex.replace(essenString, "").trim()
 
-                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value ?: ""
-                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value ?: ""
-                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value ?: ""
+                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value + "\u202f€" ?: ""
+                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
+                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value + "\u202f€" ?: ""
 
                 essenBeschreibung.add(Essen(essenString, allergenList, studentenPreis, bedienstetePreis, gaestePreis))
             }
