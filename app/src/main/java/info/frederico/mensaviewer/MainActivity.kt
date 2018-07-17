@@ -96,13 +96,13 @@ class MainActivity : AppCompatActivity() {
             for (e in essen.withIndex()){
                 var essenString = tagsRegex.replace(e.value.toString(), "")
 
-                var allergenList = bracketRegex.find(essenString)!!.groupValues[1].split(',')
+                var allergenList = bracketRegex.find(essenString)?.groupValues?.get(1)?.split(", ") ?: listOf()
 
                 essenString = bracketRegex.replace(essenString, "").trim()
 
-                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())!!.value
-                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())!!.value
-                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())!!.value
+                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value ?: ""
+                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value ?: ""
+                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value ?: ""
 
                 essenBeschreibung.add(Essen(essenString, allergenList, studentenPreis, bedienstetePreis, gaestePreis))
             }
