@@ -84,22 +84,27 @@ class MainActivity : AppCompatActivity() {
 
     private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
         override fun doInBackground(vararg p0: Void?): List<Essen> {
-            val tagsRegex = "<td.*description\"> |<br>|<img.+?>|</td>".toRegex()
-            val bracketRegex = " \\u0028.+?\\u0029 ".toRegex()
-            val nestedRegex = "&.+?\\u0029".toRegex()
-            val undRegex = "&| +$".toRegex()
+            val tagsRegex = "<[^>]+>".toRegex()
+            val bracketRegex = " \\((.+?)\\) ".toRegex()
             val preisRegex = "\\d+,\\d{2}".toRegex()
+
             val doc : Document = Jsoup.connect(mensa.url).get()
             val essen : Elements = doc.select(".dish-description")
-            val preis : Elements = doc.select("tr")
+            val preis : Elements = doc.select(".price")
             val essenBeschreibung : MutableList<Essen> = ArrayList<Essen>()
+
             for (e in essen.withIndex()){
                 var essenString = tagsRegex.replace(e.value.toString(), "")
-                essenString = bracketRegex.replace(essenString, "&")
-                essenString = nestedRegex.replace(essenString, "")
-                essenString = undRegex.replace(essenString, "")
-                var preisString = preisRegex.find(preis[e.index+1].toString())!!.value
-                essenBeschreibung.add(Essen(essenString, preisString))
+
+                var allergenList = bracketRegex.find(essenString)!!.groupValues[1].split(',')
+
+                essenString = bracketRegex.replace(essenString, "").trim()
+
+                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())!!.value
+                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())!!.value
+                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())!!.value
+
+                essenBeschreibung.add(Essen(essenString, allergenList, studentenPreis, bedienstetePreis, gaestePreis))
             }
             return essenBeschreibung
         }
