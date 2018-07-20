@@ -22,6 +22,7 @@ import info.frederico.mensaviewer.helper.Essen
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.net.SocketTimeoutException
 
 
 class MainActivity : AppCompatActivity() {
@@ -89,29 +90,34 @@ class MainActivity : AppCompatActivity() {
             val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
             val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
             val preisRegex = "\\d+,\\d{2}".toRegex()
-
-            val doc : Document = Jsoup.connect(mensa.url).get()
-            val essen : Elements = doc.select(".dish-description")
-            val preis : Elements = doc.select(".price")
             val essenBeschreibung : MutableList<Essen> = ArrayList<Essen>()
 
-            for (e in essen.withIndex()){
-                var essenString = tagsRegex.replace(e.value.toString(), "")
+            try {
+                val doc : Document = Jsoup.connect(mensa.url).get()
+                val essen : Elements = doc.select(".dish-description")
+                val preis : Elements = doc.select(".price")
 
-                var allergenMap = hashMapOf<String, List<String>>()
-                for (match in allergenRegex.findAll(essenString)) {
-                    var ingredient = starRegex.replace(match.groupValues[1], "").trim()
-                    var allergenList = match.groupValues[2].split(", ")
-                    allergenMap[ingredient] = allergenList
+                for (e in essen.withIndex()){
+                    var essenString = tagsRegex.replace(e.value.toString(), "")
+
+                    var allergenMap = hashMapOf<String, List<String>>()
+                    for (match in allergenRegex.findAll(essenString)) {
+                        var ingredient = starRegex.replace(match.groupValues[1], "").trim()
+                        var allergenList = match.groupValues[2].split(", ")
+                        allergenMap[ingredient] = allergenList
+                    }
+
+                    essenString = bracketRegex.replace(essenString, "").trim()
+
+                    var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value + "\u202f€" ?: ""
+                    var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
+                    var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value + "\u202f€" ?: ""
+
+                    essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
                 }
-
-                essenString = bracketRegex.replace(essenString, "").trim()
-
-                var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value + "\u202f€" ?: ""
-                var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
-                var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value + "\u202f€" ?: ""
-
-                essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
+            }
+            catch (e : SocketTimeoutException){
+                cancel(true)
             }
             return essenBeschreibung
         }
