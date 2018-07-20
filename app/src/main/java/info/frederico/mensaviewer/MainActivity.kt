@@ -1,24 +1,22 @@
 package info.frederico.mensaviewer
 
-import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import info.frederico.mensaviewer.helper.Mensa
-import kotlinx.android.synthetic.main.activity_main.*
-import android.os.AsyncTask
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import info.frederico.mensaviewer.helper.Essen
+import info.frederico.mensaviewer.helper.HtmlHelper
+import info.frederico.mensaviewer.helper.Mensa
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -108,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     essenString = bracketRegex.replace(essenString, "").trim()
+                    essenString = HtmlHelper.fromHtmltoString(essenString)
 
                     var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value + "\u202f€" ?: ""
                     var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
