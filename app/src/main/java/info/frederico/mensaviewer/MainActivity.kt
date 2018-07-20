@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var mensa = Mensa.STUDIERENDENHAUS
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        recyclerView.visibility = View.INVISIBLE
         when (item.itemId) {
             R.id.navigation_studierendenhaus -> {
                 mensa = Mensa.STUDIERENDENHAUS
@@ -52,11 +53,14 @@ class MainActivity : AppCompatActivity() {
         false
     }
 
+    private val mOnNavigationItemReselectedListener = BottomNavigationView.OnNavigationItemReselectedListener {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
 
         viewManager = LinearLayoutManager(this)
         viewAdapter = EssenAdapter(essensliste)
