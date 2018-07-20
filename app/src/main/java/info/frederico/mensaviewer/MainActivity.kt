@@ -85,7 +85,9 @@ class MainActivity : AppCompatActivity() {
     private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
         override fun doInBackground(vararg p0: Void?): List<Essen> {
             val tagsRegex = "<[^>]+>".toRegex()
-            val bracketRegex = " \\((.+?)\\) ".toRegex()
+            val bracketRegex = " \\(.+?\\) ".toRegex()
+            val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
+            val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
             val preisRegex = "\\d+,\\d{2}".toRegex()
 
             val doc : Document = Jsoup.connect(mensa.url).get()
@@ -96,7 +98,12 @@ class MainActivity : AppCompatActivity() {
             for (e in essen.withIndex()){
                 var essenString = tagsRegex.replace(e.value.toString(), "")
 
-                var allergenList = bracketRegex.find(essenString)?.groupValues?.get(1)?.split(", ") ?: listOf()
+                var allergenMap = hashMapOf<String, List<String>>()
+                for (match in allergenRegex.findAll(essenString)) {
+                    var ingredient = starRegex.replace(match.groupValues[1], "").trim()
+                    var allergenList = match.groupValues[2].split(", ")
+                    allergenMap[ingredient] = allergenList
+                }
 
                 essenString = bracketRegex.replace(essenString, "").trim()
 
@@ -104,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                 var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
                 var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value + "\u202f€" ?: ""
 
-                essenBeschreibung.add(Essen(essenString, allergenList, studentenPreis, bedienstetePreis, gaestePreis))
+                essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
             }
             return essenBeschreibung
         }
