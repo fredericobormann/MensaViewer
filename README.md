@@ -8,6 +8,7 @@ feel free to make a pull request or open an issue!
 The app is available in Google Play Store as a closed alpha. If you would like to take part, please contact me!
 
 ## Upcoming features
+* Showing the date of the canteen plan displayed
 * Possibility to choose your preferred canteens
 * Setting for choosing your price category
 * Optional analytics to collect stability data
