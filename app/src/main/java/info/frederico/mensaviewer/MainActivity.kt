@@ -14,7 +14,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import info.frederico.mensaviewer.helper.Essen
-import info.frederico.mensaviewer.helper.HtmlHelper
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
         override fun doInBackground(vararg p0: Void?): List<Essen> {
             val tagsRegex = "<[^>]+>".toRegex()
-            val bracketRegex = " \\(.+?\\) ".toRegex()
+            val bracketRegex = " \\(.+?\\) ?".toRegex()
             val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
             val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
             val preisRegex = "\\d+,\\d{2}".toRegex()
@@ -100,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                 val preis : Elements = doc.select(".price")
 
                 for (e in essen.withIndex()){
-                    var essenString = tagsRegex.replace(e.value.toString(), "")
+                    var essenString = tagsRegex.replace(e.value.text(), "")
 
                     var allergenMap = hashMapOf<String, List<String>>()
                     for (match in allergenRegex.findAll(essenString)) {
@@ -110,11 +109,10 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     essenString = bracketRegex.replace(essenString, "").trim()
-                    essenString = HtmlHelper.fromHtmltoString(essenString)
 
-                    var studentenPreis = preisRegex.find(preis[e.index * 3].toString())?.value + "\u202f€" ?: ""
-                    var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].toString())?.value + "\u202f€" ?: ""
-                    var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].toString())?.value + "\u202f€" ?: ""
+                    var studentenPreis = preisRegex.find(preis[e.index * 3].text())?.value + "\u202f€" ?: ""
+                    var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].text())?.value + "\u202f€" ?: ""
+                    var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].text())?.value + "\u202f€" ?: ""
 
                     essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
                 }
