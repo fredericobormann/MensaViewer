@@ -136,19 +136,37 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: List<Essen>) {
-            if(viewAdapter is EssenAdapter){
-                val v = viewAdapter as EssenAdapter
-                v.setEssensplan(result)
+            if(result.isEmpty())
+            {
+                showNoDataMessage()
             }
-            swipe_container.isRefreshing = false
-            my_recycler_view.visibility = View.VISIBLE
+            else{
+                if(viewAdapter is EssenAdapter){
+                    val v = viewAdapter as EssenAdapter
+                    v.setEssensplan(result)
+                }
+                swipe_container.isRefreshing = false
+                my_recycler_view.visibility = View.VISIBLE
+            }
         }
 
         override fun onCancelled() {
+            showInternetConnectionMessage()
+            super.onCancelled()
+        }
+
+        private fun showInternetConnectionMessage() {
+            tv_error_message_internet.text = getString(R.string.error_message_internet)
             my_recycler_view.visibility = View.INVISIBLE
             swipe_container.isRefreshing = false
             tv_error_message_internet.visibility = View.VISIBLE
-            super.onCancelled()
+        }
+
+        private fun showNoDataMessage() {
+            tv_error_message_internet.text = getString(R.string.error_message_data)
+            my_recycler_view.visibility = View.INVISIBLE
+            swipe_container.isRefreshing = false
+            tv_error_message_internet.visibility = View.VISIBLE
         }
     }
 
