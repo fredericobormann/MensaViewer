@@ -23,7 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".LicenseActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>
