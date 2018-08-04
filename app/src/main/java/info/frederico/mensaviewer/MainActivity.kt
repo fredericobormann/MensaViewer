@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private var essensliste : List<Essen> = ArrayList<Essen>()
+    private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private var mensa = Mensa.STUDIERENDENHAUS
 
@@ -84,10 +85,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener{prefs, key ->
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener{prefs, key ->
             sharedPreferencesChanged(key)
         }
-        preferences.registerOnSharedPreferenceChangeListener(listener)
+        preferences.registerOnSharedPreferenceChangeListener(prefListener)
 
         UpdateMensaPlanTask().execute()
     }
