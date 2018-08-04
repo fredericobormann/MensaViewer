@@ -6,4 +6,9 @@
         android:entries="@array/pref_usergroup_entries"
         android:entryValues="@array/pref_usergroup_values"
         android:defaultValue="@string/pref_usergroup_defaultValue"/>
+    <MultiSelectListPreference
+        android:key="@string/pref_mensa"
+        android:title="@string/pref_mensa_title"
+        android:entries="@array/pref_mensa_entries"
+        android:entryValues="@array/pref_mensa_values"/>
 </PreferenceScreen>

@@ -8,4 +8,16 @@
         <item>@string/pref_usergroup_student</item>
         <item>@string/pref_usergroup_employee</item>
     </array>
+    <array name="pref_mensa_values">
+        <item>STUDIERENDENHAUS</item>
+        <item>INFORMATIKUM</item>
+        <item>CAMPUS</item>
+        <item>HARBURG</item>
+    </array>
+    <array name="pref_mensa_entries">
+        <item>Studierendenhaus</item>
+        <item>Informatikum</item>
+        <item>Campus</item>
+        <item>Harburg</item>
+    </array>
 </resources>
