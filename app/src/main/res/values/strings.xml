@@ -17,4 +17,12 @@
     <string name="prefs">Einstellungen</string>
     <string name="pref_mensa">pref_mensa</string>
     <string name="pref_mensa_title">Mensa</string>
+    <string name="pref_mensa_studierendenhausValue" translatable="false">STUDIERENDENHAUS</string>
+    <string name="pref_mensa_informatikumValue" translatable="false">INFORMATIKUM</string>
+    <string name="pref_mensa_campusValue" translatable="false">CAMPUS</string>
+    <string name="pref_mensa_harburgValue" translatable="false">HARBURG</string>
+    <string name="pref_mensa_studierendenhaus">Studierendenhaus</string>
+    <string name="pref_mensa_informatikum">Informatikum</string>
+    <string name="pref_mensa_campus">Campus</string>
+    <string name="pref_mensa_harburg">Harburg</string>
 </resources>

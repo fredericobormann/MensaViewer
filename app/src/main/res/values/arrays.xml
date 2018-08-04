@@ -9,15 +9,15 @@
         <item>@string/pref_usergroup_employee</item>
     </array>
     <array name="pref_mensa_values">
-        <item>STUDIERENDENHAUS</item>
-        <item>INFORMATIKUM</item>
-        <item>CAMPUS</item>
-        <item>HARBURG</item>
+        <item>@string/pref_mensa_studierendenhausValue</item>
+        <item>@string/pref_mensa_informatikumValue</item>
+        <item>@string/pref_mensa_campusValue</item>
+        <item>@string/pref_mensa_harburgValue</item>
     </array>
     <array name="pref_mensa_entries">
-        <item>Studierendenhaus</item>
-        <item>Informatikum</item>
-        <item>Campus</item>
-        <item>Harburg</item>
+        <item>@string/pref_mensa_studierendenhaus</item>
+        <item>@string/pref_mensa_informatikum</item>
+        <item>@string/pref_mensa_campus</item>
+        <item>@string/pref_mensa_harburg</item>
     </array>
 </resources>

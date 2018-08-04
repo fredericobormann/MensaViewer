@@ -15,9 +15,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -32,27 +34,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private var mensa = Mensa.STUDIERENDENHAUS
+    private lateinit var viewIdMensaMap: HashMap<Int, Mensa>
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        recyclerView.visibility = View.INVISIBLE
-        when (item.itemId) {
-            R.id.navigation_studierendenhaus -> {
-                mensa = Mensa.STUDIERENDENHAUS
-                UpdateMensaPlanTask().execute()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_informatikum -> {
-                mensa = Mensa.INFORMATIKUM
-                UpdateMensaPlanTask().execute()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_campus -> {
-               mensa = Mensa.CAMPUS
-                UpdateMensaPlanTask().execute()
-                return@OnNavigationItemSelectedListener true
-            }
+        return@OnNavigationItemSelectedListener reactToNavSelection(item)
+    }
+
+    private fun reactToNavSelection(item: MenuItem): Boolean{
+        if(viewIdMensaMap.containsKey(item.itemId)) {
+            recyclerView.visibility = View.INVISIBLE
+            mensa = viewIdMensaMap.get(item.itemId) ?: Mensa.STUDIERENDENHAUS
+            UpdateMensaPlanTask().execute()
+            return true
         }
-        false
+
+        return false
     }
 
     private val mOnNavigationItemReselectedListener = BottomNavigationView.OnNavigationItemReselectedListener {}
@@ -61,8 +57,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
 
         viewManager = LinearLayoutManager(this)
         viewAdapter = EssenAdapter(essensliste, this)
@@ -84,6 +78,11 @@ class MainActivity : AppCompatActivity() {
             UpdateMensaPlanTask().execute()
         }
 
+        initializeNavigation()
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
+
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         prefListener = SharedPreferences.OnSharedPreferenceChangeListener{prefs, key ->
             sharedPreferencesChanged(key)
@@ -93,11 +92,32 @@ class MainActivity : AppCompatActivity() {
         UpdateMensaPlanTask().execute()
     }
 
+    private fun initializeNavigation() {
+        viewIdMensaMap = HashMap()
+        navigation.menu.clear()
+        var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), HashSet<String>())
+        //TODO the following lines should be removed in future versions, when SharedPreferences are checked before applied
+        if(selectedMensas.isEmpty()){
+            selectedMensas = setOf<String>("STUDIERENDENHAUS")
+        }
+        for(m in selectedMensas){
+            val mensa = Mensa.valueOf(m)
+            val item = navigation.menu.add(0, mensa.id, mensa.ordinal, mensa.description)
+            item.icon = getDrawable(mensa.icon)
+            viewIdMensaMap[item.itemId] = mensa
+        }
+
+        reactToNavSelection(navigation.menu.getItem(0))
+    }
+
     private fun sharedPreferencesChanged(key: String?) {
         when(key ?: ""){
             getString(R.string.pref_usergroup) -> {
-                    recyclerView.invalidate()
-                    viewAdapter.notifyDataSetChanged()
+                recyclerView.invalidate()
+                viewAdapter.notifyDataSetChanged()
+            }
+            getString(R.string.pref_mensa) -> {
+                initializeNavigation()
             }
         }
     }
@@ -136,6 +156,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             catch (e : SocketTimeoutException){
+                cancel(true)
+            }
+            catch(e : HttpStatusException){
                 cancel(true)
             }
             return essenBeschreibung
