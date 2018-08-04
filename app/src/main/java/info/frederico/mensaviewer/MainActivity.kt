@@ -2,10 +2,12 @@ package info.frederico.mensaviewer
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.AsyncTask
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private var essensliste : List<Essen> = ArrayList<Essen>()
+    private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private var mensa = Mensa.STUDIERENDENHAUS
 
@@ -62,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = EssenAdapter(essensliste)
+        viewAdapter = EssenAdapter(essensliste, this)
 
         recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply {
             // use this setting to improve performance if you know that changes
@@ -81,7 +84,22 @@ class MainActivity : AppCompatActivity() {
             UpdateMensaPlanTask().execute()
         }
 
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener{prefs, key ->
+            sharedPreferencesChanged(key)
+        }
+        preferences.registerOnSharedPreferenceChangeListener(prefListener)
+
         UpdateMensaPlanTask().execute()
+    }
+
+    private fun sharedPreferencesChanged(key: String?) {
+        when(key ?: ""){
+            getString(R.string.pref_usergroup) -> {
+                    recyclerView.invalidate()
+                    viewAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
@@ -184,8 +202,18 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     return true
                 }
+                R.id.prefs -> {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener)
     }
 }
