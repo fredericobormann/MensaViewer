@@ -1,5 +1,7 @@
 package info.frederico.mensaviewer
 
+import android.content.Context
+import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +9,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.essenseintrag_view.view.*
 import info.frederico.mensaviewer.helper.Essen
 
-class EssenAdapter(private var essensplan: List<Essen>) :
+class EssenAdapter(private var essensplan: List<Essen>, private val context: Context) :
 RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -32,7 +34,14 @@ RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.view.essensTextView.text = essensplan[position].bezeichnung
-        holder.view.preisTextView.text = essensplan[position].studentenPreis
+        when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
+            context.getString(R.string.pref_usergroup_studentValue) -> {
+                holder.view.preisTextView.text = essensplan[position].studentenPreis
+            }
+            context.getString(R.string.pref_usergroup_employeeValue) -> {
+                holder.view.preisTextView.text = essensplan[position].bedienstetePreis
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

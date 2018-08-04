@@ -11,6 +11,7 @@
     <string name="pref_usergroup_title">Preiskategorie</string>
     <string name="pref_usergroup_studentValue" translatable="false">pref_student</string>
     <string name="pref_usergroup_employeeValue" translatable="false">pref_employee</string>
+    <string name="pref_usergroup_defaultValue" translatable="false">@string/pref_usergroup_studentValue</string>
     <string name="pref_usergroup_student">Student</string>
     <string name="pref_usergroup_employee">Mitarbeiter</string>
     <string name="prefs">Einstellungen</string>

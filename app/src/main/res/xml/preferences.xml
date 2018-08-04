@@ -5,5 +5,5 @@
         android:title="@string/pref_usergroup_title"
         android:entries="@array/pref_usergroup_entries"
         android:entryValues="@array/pref_usergroup_values"
-        android:defaultValue="@string/pref_usergroup_studentValue"/>
+        android:defaultValue="@string/pref_usergroup_defaultValue"/>
 </PreferenceScreen>
