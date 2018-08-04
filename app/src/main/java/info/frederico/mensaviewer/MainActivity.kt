@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
@@ -96,10 +95,6 @@ class MainActivity : AppCompatActivity() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
         var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), HashSet<String>())
-        //TODO the following lines should be removed in future versions, when SharedPreferences are checked before applied
-        if(selectedMensas.isEmpty()){
-            selectedMensas = setOf<String>("STUDIERENDENHAUS")
-        }
         for(m in selectedMensas){
             val mensa = Mensa.valueOf(m)
             val item = navigation.menu.add(0, mensa.id, mensa.ordinal, mensa.description)
