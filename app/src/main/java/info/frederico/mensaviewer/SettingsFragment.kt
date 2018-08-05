@@ -35,7 +35,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun checkMensaPreference(preference: Preference?, newValue: Any?) : Boolean {
-        if(preference is MultiSelectListPreference && newValue is Array<*>){
+        if(preference is MultiSelectListPreference && newValue is Set<*>){
             if(newValue.size in 1..4){
                 return true
             }
