@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                 cancel(true)
             }
             catch(e : HttpStatusException){
-                cancel(true)
+
             }
             return essenBeschreibung
         }
