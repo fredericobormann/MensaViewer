@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), HashSet<String>())
         for(m in selectedMensas){
             val mensa = Mensa.valueOf(m)
-            val item = navigation.menu.add(0, mensa.id, mensa.ordinal, mensa.description)
+            val item = navigation.menu.add(0, mensa.navigationViewId, mensa.ordinal, mensa.description)
             item.icon = getDrawable(mensa.icon)
             viewIdMensaMap[item.itemId] = mensa
         }

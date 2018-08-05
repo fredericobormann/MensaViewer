@@ -7,6 +7,7 @@
     <string name="licenses">Lizenzen</string>
     <string name="error_message_internet">Es konnte keine Verbindung zum Internet hergestellt werden.</string>
     <string name="error_message_data">Es ist kein entsprechender Essensplan verfügbar.</string>
+
     <string name="pref_usergroup" translatable="false">pref_usergroup</string>
     <string name="pref_usergroup_title">Preiskategorie</string>
     <string name="pref_usergroup_studentValue" translatable="false">pref_student</string>
@@ -14,15 +15,46 @@
     <string name="pref_usergroup_defaultValue" translatable="false">@string/pref_usergroup_studentValue</string>
     <string name="pref_usergroup_student">Studierende</string>
     <string name="pref_usergroup_employee">Bedienstete</string>
+
     <string name="prefs">Einstellungen</string>
+
     <string name="pref_mensa">pref_mensa</string>
     <string name="pref_mensa_title">Mensa</string>
     <string name="pref_mensa_studierendenhausValue" translatable="false">STUDIERENDENHAUS</string>
     <string name="pref_mensa_informatikumValue" translatable="false">INFORMATIKUM</string>
     <string name="pref_mensa_campusValue" translatable="false">CAMPUS</string>
     <string name="pref_mensa_harburgValue" translatable="false">HARBURG</string>
+    <string name="pref_mensa_armgartstrasseValue">ARMGARTSTRASSE</string>
+    <string name="pref_mensa_bergedorfValue">BERGEDORF</string>
+    <string name="pref_mensa_berlinerTorValue">BERLINERTOR</string>
+    <string name="pref_mensa_botanischerGartenValue">BOTANISCHERGARTEN</string>
+    <string name="pref_mensa_blsValue">BLS</string>
+    <string name="pref_mensa_cafeAlexValue">CAFEALEX</string>
+    <string name="pref_mensa_cafeMittelValue">CAFEMITTEL</string>
+    <string name="pref_mensa_cafeBerlinerValue">CAFEBERLINER</string>
+    <string name="pref_mensa_cafeCfelValue">CAFECFEL</string>
+    <string name="pref_mensa_cafeJungValue">CAFEJUNG</string>
+    <string name="pref_mensa_finkenauValue">FINKENAU</string>
+    <string name="pref_mensa_geomatikumValue">GEOMATIKUM</string>
+    <string name="pref_mensa_hcuValue">HCU</string>
+    <string name="pref_mensa_ueberseeringValue">UEBERSEE</string>
+
     <string name="pref_mensa_studierendenhaus">Studierendenhaus</string>
     <string name="pref_mensa_informatikum">Informatikum</string>
     <string name="pref_mensa_campus">Campus</string>
     <string name="pref_mensa_harburg">Harburg</string>
+    <string name="pref_mensa_armgartstrasse">Armgartstraße</string>
+    <string name="pref_mensa_bergedorf">Bergedorf</string>
+    <string name="pref_mensa_berlinerTor">Berliner Tor</string>
+    <string name="pref_mensa_botanischerGarten">Botanischer Garten</string>
+    <string name="pref_mensa_bls">Bucerius Law School</string>
+    <string name="pref_mensa_cafeAlex">Café Alexanderstraße</string>
+    <string name="pref_mensa_cafeMittel">Café Mittelweg</string>
+    <string name="pref_mensa_cafeBerliner">Café Berliner Tor</string>
+    <string name="pref_mensa_cafeCfel">Café CFEL</string>
+    <string name="pref_mensa_cafeJung">Café Jungiusstraße</string>
+    <string name="pref_mensa_finkenau">Finkenau</string>
+    <string name="pref_mensa_geomatikum">Geomatikum</string>
+    <string name="pref_mensa_hcu">HCU</string>
+    <string name="pref_mensa_ueberseering">Überseering</string>
 </resources>

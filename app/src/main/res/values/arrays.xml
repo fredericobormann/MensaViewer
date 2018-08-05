@@ -13,11 +13,39 @@
         <item>@string/pref_mensa_informatikumValue</item>
         <item>@string/pref_mensa_campusValue</item>
         <item>@string/pref_mensa_harburgValue</item>
+        <item>@string/pref_mensa_armgartstrasseValue</item>
+        <item>@string/pref_mensa_bergedorfValue</item>
+        <item>@string/pref_mensa_berlinerTorValue</item>
+        <item>@string/pref_mensa_botanischerGartenValue</item>
+        <item>@string/pref_mensa_blsValue</item>
+        <item>@string/pref_mensa_cafeAlexValue</item>
+        <item>@string/pref_mensa_cafeMittelValue</item>
+        <item>@string/pref_mensa_cafeBerlinerValue</item>
+        <item>@string/pref_mensa_cafeCfelValue</item>
+        <item>@string/pref_mensa_cafeJungValue</item>
+        <item>@string/pref_mensa_finkenauValue</item>
+        <item>@string/pref_mensa_geomatikumValue</item>
+        <item>@string/pref_mensa_hcuValue</item>
+        <item>@string/pref_mensa_ueberseeringValue</item>
     </array>
     <array name="pref_mensa_entries">
         <item>@string/pref_mensa_studierendenhaus</item>
         <item>@string/pref_mensa_informatikum</item>
         <item>@string/pref_mensa_campus</item>
         <item>@string/pref_mensa_harburg</item>
+        <item>@string/pref_mensa_armgartstrasse</item>
+        <item>@string/pref_mensa_bergedorf</item>
+        <item>@string/pref_mensa_berlinerTor</item>
+        <item>@string/pref_mensa_botanischerGarten</item>
+        <item>@string/pref_mensa_bls</item>
+        <item>@string/pref_mensa_cafeAlex</item>
+        <item>@string/pref_mensa_cafeMittel</item>
+        <item>@string/pref_mensa_cafeBerliner</item>
+        <item>@string/pref_mensa_cafeCfel</item>
+        <item>@string/pref_mensa_cafeJung</item>
+        <item>@string/pref_mensa_finkenau</item>
+        <item>@string/pref_mensa_geomatikum</item>
+        <item>@string/pref_mensa_hcu</item>
+        <item>@string/pref_mensa_ueberseering</item>
     </array>
 </resources>
