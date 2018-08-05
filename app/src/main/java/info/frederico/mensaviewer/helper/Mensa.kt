@@ -28,5 +28,5 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     UEBERSEE("überseering", R.drawable.ic_dashboard_black_24dp, View.generateViewId(), 380);
 
     val url : String
-    get() = "https://speiseplan.studierendenwerk-hamburg.de/de/" + number + "/2018/99/"
+    get() = "https://speiseplan.studierendenwerk-hamburg.de/de/" + number + "/2018/0/"
 }
