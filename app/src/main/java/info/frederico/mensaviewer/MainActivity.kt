@@ -39,6 +39,13 @@ class MainActivity : AppCompatActivity() {
         return@OnNavigationItemSelectedListener reactToNavSelection(item)
     }
 
+    /**
+     * Update the canteen plan according to the new Navigation-Item selected
+     *
+     * @param item new Navigation-Item selected
+     *
+     * @return true if completed successfully
+     */
     private fun reactToNavSelection(item: MenuItem): Boolean{
         if(viewIdMensaMap.containsKey(item.itemId)) {
             recyclerView.visibility = View.INVISIBLE
@@ -60,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         viewManager = LinearLayoutManager(this)
         viewAdapter = EssenAdapter(essensliste, this)
 
-        recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply {
+        recyclerView = my_recycler_view.apply {
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
@@ -88,7 +95,12 @@ class MainActivity : AppCompatActivity() {
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
 
-        UpdateMensaPlanTask().execute()
+        if(savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null){
+            mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
+        }
+        else{
+            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+        }
     }
 
     private fun initializeNavigation() {
@@ -101,8 +113,6 @@ class MainActivity : AppCompatActivity() {
             item.icon = getDrawable(mensa.icon)
             viewIdMensaMap[item.itemId] = mensa
         }
-
-        reactToNavSelection(navigation.menu.getItem(0))
     }
 
     private fun sharedPreferencesChanged(key: String?) {
@@ -230,8 +240,28 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(viewIdMensaMap.containsKey(mensa.navigationViewId)){
+            navigation.selectedItemId = mensa.navigationViewId
+        }
+        else{
+            navigation.selectedItemId = navigation.menu.getItem(0).itemId
+            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+        }
+        UpdateMensaPlanTask().execute()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.run {
+            putString("SELECTED_MENSA", mensa.toString())
+        }
+
+        super.onSaveInstanceState(outState)
     }
 }
