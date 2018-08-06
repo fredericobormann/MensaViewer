@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private var essensliste : List<Essen> = ArrayList<Essen>()
+    private var essensliste: List<Essen> = ArrayList<Essen>()
     private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private var mensa = Mensa.STUDIERENDENHAUS
@@ -61,6 +61,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setLayout()
+        setListener()
+
+        if (savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null) {
+            mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
+        }
+        else {
+            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+        }
+    }
+
+    private fun setLayout() {
         setContentView(R.layout.activity_main)
 
 
@@ -76,38 +89,34 @@ class MainActivity : AppCompatActivity() {
             layoutManager = viewManager
 
             // specify an viewAdapter (see also next example)
-            adapter = viewAdapter}
+            adapter = viewAdapter
+        }
 
         swipe_container.setColorSchemeColors(getColor(R.color.colorAccent), getColor(R.color.colorPrimary), getColor(R.color.secondaryLightColor))
 
+        initializeNavigation()
+    }
+
+    private fun setListener(){
         swipe_container.setOnRefreshListener {
             UpdateMensaPlanTask().execute()
         }
-
-        initializeNavigation()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        prefListener = SharedPreferences.OnSharedPreferenceChangeListener{prefs, key ->
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             sharedPreferencesChanged(key)
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
-
-        if(savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null){
-            mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
-        }
-        else{
-            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
-        }
     }
 
     private fun initializeNavigation() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
         var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), HashSet<String>())
-        for(m in selectedMensas){
+        for (m in selectedMensas) {
             val mensa = Mensa.valueOf(m)
             val item = navigation.menu.add(0, mensa.navigationViewId, mensa.ordinal, mensa.description)
             item.icon = getDrawable(mensa.icon)
@@ -116,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sharedPreferencesChanged(key: String?) {
-        when(key ?: ""){
+        when (key ?: "") {
             getString(R.string.pref_usergroup) -> {
                 recyclerView.invalidate()
                 viewAdapter.notifyDataSetChanged()
@@ -134,14 +143,14 @@ class MainActivity : AppCompatActivity() {
             val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
             val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
             val preisRegex = "\\d+,\\d{2}".toRegex()
-            val essenBeschreibung : MutableList<Essen> = ArrayList<Essen>()
+            val essenBeschreibung: MutableList<Essen> = ArrayList<Essen>()
 
             try {
-                val doc : Document = Jsoup.connect(mensa.url).get()
-                val essen : Elements = doc.select(".dish-description")
-                val preis : Elements = doc.select(".price")
+                val doc: Document = Jsoup.connect(mensa.url).get()
+                val essen: Elements = doc.select(".dish-description")
+                val preis: Elements = doc.select(".price")
 
-                for (e in essen.withIndex()){
+                for (e in essen.withIndex()) {
                     var essenString = tagsRegex.replace(e.value.text(), "")
 
                     var allergenMap = hashMapOf<String, List<String>>()
@@ -159,11 +168,9 @@ class MainActivity : AppCompatActivity() {
 
                     essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
                 }
-            }
-            catch (e : SocketTimeoutException){
+            } catch (e: SocketTimeoutException) {
                 cancel(true)
-            }
-            catch(e : HttpStatusException){
+            } catch (e: HttpStatusException) {
 
             }
             return essenBeschreibung
@@ -175,19 +182,17 @@ class MainActivity : AppCompatActivity() {
             val cm = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnected == true
-            if(!isConnected){
+            if (!isConnected) {
                 cancel(true)
             }
             tv_error_message_internet.visibility = View.INVISIBLE
         }
 
         override fun onPostExecute(result: List<Essen>) {
-            if(result.isEmpty())
-            {
+            if (result.isEmpty()) {
                 showNoDataMessage()
-            }
-            else{
-                if(viewAdapter is EssenAdapter){
+            } else {
+                if (viewAdapter is EssenAdapter) {
                     val v = viewAdapter as EssenAdapter
                     v.setEssensplan(result)
                 }
@@ -223,7 +228,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item != null) {
+        if (item != null) {
             when (item.itemId) {
                 R.id.licenses -> {
                     val intent = Intent(this, LicenseActivity::class.java)
