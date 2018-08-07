@@ -7,6 +7,7 @@ import android.preference.ListPreference
 import android.preference.MultiSelectListPreference
 import android.preference.Preference
 import android.preference.PreferenceFragment
+import info.frederico.mensaviewer.helper.Mensa
 
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -18,6 +19,17 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             val listPref = pref as ListPreference
             pref.summary = listPref.entry
         }
+        else if (pref is MultiSelectListPreference) {
+            pref.summary = createMultiSelectedListPreferenceSummary(pref)
+        }
+    }
+
+    private fun createMultiSelectedListPreferenceSummary(pref: MultiSelectListPreference): String {
+        val sb: StringBuilder = StringBuilder()
+        for(entryValue in pref.values) {
+            sb.append(Mensa.valueOf(entryValue).description + ", ")
+        }
+        return sb.substring(0, sb.length - 2)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
