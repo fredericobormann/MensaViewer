@@ -247,7 +247,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(viewIdMensaMap.containsKey(mensa.navigationViewId)){
+        if(navigation.menu.findItem(mensa.navigationViewId) != null){
             navigation.selectedItemId = mensa.navigationViewId
         }
         else{
