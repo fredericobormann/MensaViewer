@@ -19,7 +19,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             val listPref = pref as ListPreference
             pref.summary = listPref.entry
         }
-        else if (pref is MultiSelectListPreference) {
+        else if (pref is MultiSelectListPreference && !pref.values.isEmpty()) {
             pref.summary = createMultiSelectedListPreferenceSummary(pref)
         }
     }

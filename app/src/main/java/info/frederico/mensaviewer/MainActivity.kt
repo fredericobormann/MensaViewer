@@ -62,15 +62,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setLayout()
-        setListener()
+        try {
+            setLayout()
 
-        if (savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null) {
-            mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
+            if (savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null) {
+                mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
+            } else {
+                mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+            }
         }
-        else {
-            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+        catch(nie: NavigationInvalidException){
+            showNavigationInvalidMessage()
         }
+        finally {
+            setListener()
+        }
+    }
+
+    private fun showNavigationInvalidMessage() {
+        tv_error_message_internet.text = getString(R.string.error_message_navigation)
+        my_recycler_view.visibility = View.INVISIBLE
+        tv_error_message_internet.visibility = View.VISIBLE
     }
 
     private fun setLayout() {
@@ -115,7 +127,10 @@ class MainActivity : AppCompatActivity() {
     private fun initializeNavigation() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
-        var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), HashSet<String>())
+        var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), resources.getStringArray(R.array.pref_mensa_default).toSet())
+        if(selectedMensas.isEmpty()){
+            throw NavigationInvalidException()
+        }
         for (m in selectedMensas) {
             val mensa = Mensa.valueOf(m)
             val item = navigation.menu.add(0, mensa.navigationViewId, mensa.ordinal, mensa.description)
@@ -131,7 +146,12 @@ class MainActivity : AppCompatActivity() {
                 viewAdapter.notifyDataSetChanged()
             }
             getString(R.string.pref_mensa) -> {
-                initializeNavigation()
+                try {
+                    initializeNavigation()
+                }
+                catch (nie: NavigationInvalidException){
+                    showNavigationInvalidMessage()
+                }
             }
         }
     }

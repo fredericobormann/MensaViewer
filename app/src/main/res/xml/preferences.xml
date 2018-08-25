@@ -10,5 +10,6 @@
         android:key="@string/pref_mensa"
         android:title="@string/pref_mensa_title"
         android:entries="@array/pref_mensa_entries"
-        android:entryValues="@array/pref_mensa_values"/>
+        android:entryValues="@array/pref_mensa_values"
+        android:defaultValue="@array/pref_mensa_default"/>
 </PreferenceScreen>

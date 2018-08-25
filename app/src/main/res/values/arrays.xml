@@ -48,4 +48,5 @@
         <item>@string/pref_mensa_hcu</item>
         <item>@string/pref_mensa_ueberseering</item>
     </array>
+    <array name="pref_mensa_default"></array>
 </resources>
