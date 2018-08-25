@@ -25,7 +25,7 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     FINKENAU("Finkenau", R.drawable.ic_baseline_f_24px, View.generateViewId(), 420),
     GEOMATIKUM("Geomatikum", R.drawable.ic_functions_black_24dp, View.generateViewId(), 540),
     HCU("HCU", R.drawable.ic_baseline_h_24px, View.generateViewId(), 430),
-    UEBERSEE("überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 380);
+    UEBERSEE("Überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 380);
 
     val url : String
     get() = "https://speiseplan.studierendenwerk-hamburg.de/de/" + number + "/2018/0/"
