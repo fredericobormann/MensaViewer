@@ -8,5 +8,6 @@
     <string name="pref_usergroup_title">Price category</string>
     <string name="pref_usergroup_student">Students</string>
     <string name="pref_usergroup_employee">Employees</string>
+    <string name="pref_mensa_title">Canteen</string>
     <string name="prefs">Settings</string>
 </resources>

@@ -8,5 +8,6 @@
     <string name="pref_usergroup_title">Preiskategorie</string>
     <string name="pref_usergroup_student">Studierende</string>
     <string name="pref_usergroup_employee">Bedienstete</string>
+    <string name="pref_mensa_title">Mensa</string>
     <string name="prefs">Einstellungen</string>
 </resources>
