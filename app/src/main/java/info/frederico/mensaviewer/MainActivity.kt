@@ -267,14 +267,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(navigation.menu.findItem(mensa.navigationViewId) != null){
-            navigation.selectedItemId = mensa.navigationViewId
+        if (navigation.menu.hasVisibleItems()){
+            if(navigation.menu.findItem(mensa.navigationViewId) != null){
+                navigation.selectedItemId = mensa.navigationViewId
+            }
+            else{
+                navigation.selectedItemId = navigation.menu.getItem(0).itemId
+                mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+            }
+            UpdateMensaPlanTask().execute()
         }
-        else{
-            navigation.selectedItemId = navigation.menu.getItem(0).itemId
-            mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
-        }
-        UpdateMensaPlanTask().execute()
     }
 
     override fun onDestroy() {
