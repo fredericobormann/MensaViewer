@@ -7,6 +7,7 @@ import android.preference.ListPreference
 import android.preference.MultiSelectListPreference
 import android.preference.Preference
 import android.preference.PreferenceFragment
+import android.widget.Toast
 import info.frederico.mensaviewer.helper.Mensa
 
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -52,6 +53,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 return true
             }
         }
+        Toast.makeText(context, "Bitte wähle zwischen 1 und 4 Mensas aus", Toast.LENGTH_LONG).show()
         return false
     }
 

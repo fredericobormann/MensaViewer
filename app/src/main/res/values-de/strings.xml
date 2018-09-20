@@ -5,6 +5,7 @@
     <string name="error_message_internet">Es konnte keine Verbindung zum Internet hergestellt werden.</string>
     <string name="error_message_data">Es ist kein entsprechender Essensplan verfügbar.</string>
     <string name="error_message_navigation">Bitte wähle in den Einstellungen deine bevorzugten Mensas aus.</string>
+    <string name="error_message_preferred_canteen_selection">Bitte wähle zwischen einer und vier Mensas aus.</string>
     <string name="pref_usergroup_title">Preiskategorie</string>
     <string name="pref_usergroup_student">Studierende</string>
     <string name="pref_usergroup_employee">Bedienstete</string>
