@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.rollbar.android.Rollbar
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
@@ -77,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         finally {
             setListener()
         }
+
+        Rollbar.init(this);
     }
 
     private fun showNavigationInvalidMessage() {

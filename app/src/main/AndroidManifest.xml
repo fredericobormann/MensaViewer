@@ -12,6 +12,12 @@
         android:roundIcon="@mipmap/mv_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--
+        <meta-data android:name="com.rollbar.android.ACCESS_TOKEN"
+            android:value="TODO Rollbar Access token here" />
+        -->
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
