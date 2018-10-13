@@ -23,6 +23,7 @@ import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.lang.Exception
 import java.net.SocketTimeoutException
 
 
@@ -195,6 +196,8 @@ class MainActivity : AppCompatActivity() {
                 cancel(true)
             } catch (e: HttpStatusException) {
 
+            } catch (e: Exception) {
+                Rollbar.instance().error(e);
             }
             return essenBeschreibung
         }
