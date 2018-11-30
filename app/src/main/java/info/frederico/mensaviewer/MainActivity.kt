@@ -191,7 +191,9 @@ class MainActivity : AppCompatActivity() {
             } catch (e: SocketTimeoutException) {
                 cancel(true)
             } catch (e: HttpStatusException) {
-
+                cancel(true)
+            } catch (e: Exception) {
+                cancel(true)
             }
             return essenBeschreibung
         }
