@@ -9,9 +9,12 @@ The app is available in Google Play Store as a closed alpha. If you would like t
 
 ## Upcoming features
 * Showing the date of the canteen plan displayed
-* Possibility to choose your preferred canteens
-* Setting for choosing your price category
+* Caching canteen plans
 * Optional analytics to collect stability data
 
 ## Long-term planned
 * Sorting and filtering depending on your preferences or allergies
+
+## Completed
+* Possibility to choose your preferred canteens
+* Setting for choosing your price category
