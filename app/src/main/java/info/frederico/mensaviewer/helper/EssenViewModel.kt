@@ -37,7 +37,8 @@ class EssenViewModel : ViewModel() {
     }
 
     /**
-     * Asynchronous Task to load Mensa data from internet
+     * Asynchronous Task to load Mensa data from internet.
+     * mensa LiveData will be null, if an error occurred.
      */
     private inner class UpdateMensaPlan(): AsyncTask<Unit, Unit, List<Essen>?>(){
         override fun doInBackground(vararg param: Unit?): List<Essen>?{
