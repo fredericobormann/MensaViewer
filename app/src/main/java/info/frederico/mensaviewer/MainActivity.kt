@@ -1,11 +1,9 @@
 package info.frederico.mensaviewer
 
-import android.content.Context
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
@@ -16,27 +14,37 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import info.frederico.mensaviewer.helper.Essen
+import info.frederico.mensaviewer.helper.EssenViewModel
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.HttpStatusException
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
-import java.net.SocketTimeoutException
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: EssenAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private var essensliste: List<Essen> = ArrayList<Essen>()
     private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
-    private var mensa = Mensa.STUDIERENDENHAUS
+    private lateinit var evModel: EssenViewModel
+
     private lateinit var viewIdMensaMap: HashMap<Int, Mensa>
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         return@OnNavigationItemSelectedListener reactToNavSelection(item)
+    }
+
+    /**
+     * Changes selected Mensa in the associated EssenViewModel, which changes the plan accordingly.
+     *
+     * @param newMensa new Mensa to use.
+     */
+    private fun changeSelectedMensa(newMensa: Mensa){
+        if(newMensa != evModel.mensa){
+            swipe_container.isRefreshing = true
+            tv_error_message_internet.visibility = View.INVISIBLE
+            evModel.mensa = newMensa
+        }
     }
 
     /**
@@ -49,8 +57,7 @@ class MainActivity : AppCompatActivity() {
     private fun reactToNavSelection(item: MenuItem): Boolean{
         if(viewIdMensaMap.containsKey(item.itemId)) {
             recyclerView.visibility = View.INVISIBLE
-            mensa = viewIdMensaMap.get(item.itemId) ?: Mensa.STUDIERENDENHAUS
-            UpdateMensaPlanTask().execute()
+            changeSelectedMensa(viewIdMensaMap.get(item.itemId) ?: Mensa.STUDIERENDENHAUS)
             return true
         }
 
@@ -59,17 +66,15 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemReselectedListener = BottomNavigationView.OnNavigationItemReselectedListener {}
 
+    /**
+     * Create the MainActivity.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        evModel = ViewModelProviders.of(this).get(EssenViewModel::class.java)
 
         try {
             setLayout()
-
-            if (savedInstanceState != null && savedInstanceState.getString("SELECTED_MENSA") != null) {
-                mensa = Mensa.valueOf(savedInstanceState?.getString("SELECTED_MENSA"))
-            } else {
-                mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
-            }
         }
         catch(nie: NavigationInvalidException){
             showNavigationInvalidMessage()
@@ -79,12 +84,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Shows a message that no Mensa is selected in the preferences.
+     */
     private fun showNavigationInvalidMessage() {
         tv_error_message_internet.text = getString(R.string.error_message_navigation)
         my_recycler_view.visibility = View.INVISIBLE
         tv_error_message_internet.visibility = View.VISIBLE
     }
 
+    /**
+     * Initializes UI components:
+     *  RecyclerView
+     *  SwipeContainer
+     *  Navigation
+     */
     private fun setLayout() {
         setContentView(R.layout.activity_main)
 
@@ -109,9 +123,16 @@ class MainActivity : AppCompatActivity() {
         initializeNavigation()
     }
 
+    /**
+     * Registers Listeners for:
+     *  SwipeContainer
+     *  LiveData
+     *  Preferences
+     *  Navigation
+     */
     private fun setListener(){
         swipe_container.setOnRefreshListener {
-            UpdateMensaPlanTask().execute()
+            evModel.forceReload()
         }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -122,8 +143,47 @@ class MainActivity : AppCompatActivity() {
             sharedPreferencesChanged(key)
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
+
+        val essenObserver = Observer<List<Essen>>{ result ->
+            if(result == null){
+                showInternetConnectionMessage()
+            }
+            else if (result.isEmpty()) {
+                showNoDataMessage()
+            } else {
+                viewAdapter.setEssensplan(result)
+                swipe_container.isRefreshing = false
+                my_recycler_view.visibility = View.VISIBLE
+                tv_error_message_internet.visibility = View.INVISIBLE
+            }
+        }
+
+        evModel.essen.observe(this, essenObserver)
     }
 
+    /**
+     * Shows a message that some kind of network error occured.
+     */
+    private fun showInternetConnectionMessage() {
+        tv_error_message_internet.text = getString(R.string.error_message_internet)
+        my_recycler_view.visibility = View.INVISIBLE
+        swipe_container.isRefreshing = false
+        tv_error_message_internet.visibility = View.VISIBLE
+    }
+
+    /**
+     * Shows a message that fetched data was empty
+     */
+    private fun showNoDataMessage() {
+        tv_error_message_internet.text = getString(R.string.error_message_data)
+        my_recycler_view.visibility = View.INVISIBLE
+        swipe_container.isRefreshing = false
+        tv_error_message_internet.visibility = View.VISIBLE
+    }
+
+    /**
+     * Initializes Navigation according to Preferences.
+     */
     private fun initializeNavigation() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
@@ -139,6 +199,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Reacts to Preference changes.
+     */
     private fun sharedPreferencesChanged(key: String?) {
         when (key ?: "") {
             getString(R.string.pref_usergroup) -> {
@@ -156,99 +219,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class UpdateMensaPlanTask : AsyncTask<Void, Void, List<Essen>>() {
-        override fun doInBackground(vararg p0: Void?): List<Essen> {
-            val tagsRegex = "<[^>]+>".toRegex()
-            val bracketRegex = " \\(.+?\\) ?".toRegex()
-            val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
-            val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
-            val preisRegex = "\\d+,\\d{2}".toRegex()
-            val essenBeschreibung: MutableList<Essen> = ArrayList<Essen>()
-
-            try {
-                val doc: Document = Jsoup.connect(mensa.url).get()
-                val essen: Elements = doc.select(".dish-description")
-                val preis: Elements = doc.select(".price")
-
-                for (e in essen.withIndex()) {
-                    var essenString = tagsRegex.replace(e.value.text(), "")
-
-                    var allergenMap = hashMapOf<String, List<String>>()
-                    for (match in allergenRegex.findAll(essenString)) {
-                        var ingredient = starRegex.replace(match.groupValues[1], "").trim()
-                        var allergenList = match.groupValues[2].split(", ")
-                        allergenMap[ingredient] = allergenList
-                    }
-
-                    essenString = bracketRegex.replace(essenString, "").trim()
-
-                    var studentenPreis = preisRegex.find(preis[e.index * 3].text())?.value + "\u202f€" ?: ""
-                    var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].text())?.value + "\u202f€" ?: ""
-                    var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].text())?.value + "\u202f€" ?: ""
-
-                    essenBeschreibung.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
-                }
-            } catch (e: SocketTimeoutException) {
-                cancel(true)
-            } catch (e: HttpStatusException) {
-                cancel(true)
-            } catch (e: Exception) {
-                cancel(true)
-            }
-            return essenBeschreibung
-        }
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            swipe_container.isRefreshing = true
-            val cm = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-            val isConnected: Boolean = activeNetwork?.isConnected == true
-            if (!isConnected) {
-                cancel(true)
-            }
-            tv_error_message_internet.visibility = View.INVISIBLE
-        }
-
-        override fun onPostExecute(result: List<Essen>) {
-            if (result.isEmpty()) {
-                showNoDataMessage()
-            } else {
-                if (viewAdapter is EssenAdapter) {
-                    val v = viewAdapter as EssenAdapter
-                    v.setEssensplan(result)
-                }
-                swipe_container.isRefreshing = false
-                my_recycler_view.visibility = View.VISIBLE
-            }
-        }
-
-        override fun onCancelled() {
-            showInternetConnectionMessage()
-            super.onCancelled()
-        }
-
-        private fun showInternetConnectionMessage() {
-            tv_error_message_internet.text = getString(R.string.error_message_internet)
-            my_recycler_view.visibility = View.INVISIBLE
-            swipe_container.isRefreshing = false
-            tv_error_message_internet.visibility = View.VISIBLE
-        }
-
-        private fun showNoDataMessage() {
-            tv_error_message_internet.text = getString(R.string.error_message_data)
-            my_recycler_view.visibility = View.INVISIBLE
-            swipe_container.isRefreshing = false
-            tv_error_message_internet.visibility = View.VISIBLE
-        }
-    }
-
+    /**
+     * Create OptionsMenu
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuinflater = menuInflater
         menuinflater.inflate(R.menu.options_menu, menu)
         return true
     }
 
+    /**
+     * Reacts to OptionsMenu selection.
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
             when (item.itemId) {
@@ -267,30 +249,30 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Mark navigation item that was selected last (if it exists) and update data accordingly.
+     */
     override fun onResume() {
         super.onResume()
         if (navigation.menu.hasVisibleItems()){
-            if(navigation.menu.findItem(mensa.navigationViewId) != null){
-                navigation.selectedItemId = mensa.navigationViewId
+            if(navigation.menu.findItem(evModel.mensa?.navigationViewId ?: -1) != null){
+                navigation.selectedItemId = evModel.mensa!!.navigationViewId
+                if(evModel.essen.value != null){ // Prevents showing no internet message on start
+                    evModel.getData()
+                }
             }
             else{
                 navigation.selectedItemId = navigation.menu.getItem(0).itemId
-                mensa = viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS
+                changeSelectedMensa(viewIdMensaMap[navigation.menu.getItem(0).itemId] ?: Mensa.STUDIERENDENHAUS)
             }
-            UpdateMensaPlanTask().execute()
         }
     }
 
+    /**
+     * Unregisters SharedPreferenceChangeListener, when activity is destroyed
+     */
     override fun onDestroy() {
         super.onDestroy()
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.run {
-            putString("SELECTED_MENSA", mensa.toString())
-        }
-
-        super.onSaveInstanceState(outState)
     }
 }
