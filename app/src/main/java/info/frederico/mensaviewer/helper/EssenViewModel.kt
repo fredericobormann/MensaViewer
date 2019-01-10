@@ -17,9 +17,14 @@ class EssenViewModel : ViewModel() {
     set(newMensa) {
         if(mensa != newMensa){
             field = newMensa
-            forceReload()
+            if(mMensaplanCache[newMensa] != null){
+                essen.value = mMensaplanCache[newMensa]
+            } else {
+                forceReload()
+            }
         }
     }
+    val mMensaplanCache = HashMap<Mensa, List<Essen>?>()
 
     /**
      * Notifies observers to refresh data, although dataset has not changed.
@@ -89,6 +94,7 @@ class EssenViewModel : ViewModel() {
         override fun onPostExecute(result: List<Essen>?) {
             super.onPostExecute(result)
             essen.value = result
+            mMensaplanCache[mensa!!] = result
         }
     }
 }
