@@ -34,6 +34,13 @@ class EssenViewModel : ViewModel() {
     }
 
     /**
+     * Checks if cached data is available.
+     */
+    fun isCachedDataAvailable(m: Mensa):Boolean{
+        return mMensaplanCache[m] != null
+    }
+
+    /**
      * Reload data, ignoring if Mensa has changed
      */
     fun forceReload() {

@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun changeSelectedMensa(newMensa: Mensa){
         if(newMensa != evModel.mensa){
-            swipe_container.isRefreshing = true
+            if(!evModel.isCachedDataAvailable(newMensa)){
+                swipe_container.isRefreshing = true
+            }
             tv_error_message_internet.visibility = View.INVISIBLE
             evModel.mensa = newMensa
         }
