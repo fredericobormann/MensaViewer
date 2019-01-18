@@ -45,15 +45,16 @@ class EssenViewModel : ViewModel() {
      */
     fun forceReload() {
         UpdateMensaPlan().cancel(true)
-        UpdateMensaPlan().execute()
+        UpdateMensaPlan().execute(mensa)
     }
 
     /**
      * Asynchronous Task to load Mensa data from internet.
      * mensa LiveData will be null, if an error occurred.
      */
-    private inner class UpdateMensaPlan(): AsyncTask<Unit, Unit, List<Essen>?>(){
-        override fun doInBackground(vararg param: Unit?): List<Essen>?{
+    private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, List<Essen>?>(){
+        var loadingMensa: Mensa? = null
+        override fun doInBackground(vararg param: Mensa?): List<Essen>?{
             val tagsRegex = "<[^>]+>".toRegex()
             val bracketRegex = " \\(.+?\\) ?".toRegex()
             val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
@@ -61,12 +62,14 @@ class EssenViewModel : ViewModel() {
             val preisRegex = "\\d+,\\d{2}".toRegex()
             val essenBeschreibung: MutableList<Essen> = ArrayList<Essen>()
 
-            if(mensa == null){
+            loadingMensa = param[0]
+
+            if(loadingMensa == null){
                 return null
             }
 
             try {
-                val doc: Document = Jsoup.connect(mensa!!.url).get()
+                val doc: Document = Jsoup.connect(loadingMensa!!.url).get()
                 val essen: Elements = doc.select(".dish-description")
                 val preis: Elements = doc.select(".price")
 
@@ -100,8 +103,10 @@ class EssenViewModel : ViewModel() {
 
         override fun onPostExecute(result: List<Essen>?) {
             super.onPostExecute(result)
-            essen.value = result
-            mMensaplanCache[mensa!!] = result
+            if(mensa == loadingMensa){
+                essen.value = result
+            }
+            mMensaplanCache[loadingMensa!!] = result
         }
     }
 }
