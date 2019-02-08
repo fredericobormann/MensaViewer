@@ -3,10 +3,11 @@ package info.frederico.mensaviewer.helper
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
-import org.jsoup.HttpStatusException
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.net.SocketTimeoutException
 
 class EssenViewModel : ViewModel() {
@@ -55,12 +56,8 @@ class EssenViewModel : ViewModel() {
     private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, List<Essen>?>(){
         var loadingMensa: Mensa? = null
         override fun doInBackground(vararg param: Mensa?): List<Essen>?{
-            val tagsRegex = "<[^>]+>".toRegex()
-            val bracketRegex = " \\(.+?\\) ?".toRegex()
-            val allergenRegex = "([^,]+) \\((.+?)\\)".toRegex()
-            val starRegex = "\\*\\*\\*.*?\\*\\*\\*".toRegex()
-            val preisRegex = "\\d+,\\d{2}".toRegex()
-            val essenBeschreibung: MutableList<Essen> = ArrayList<Essen>()
+            var essenBeschreibung: List<Essen> = ArrayList<Essen>()
+            val client = OkHttpClient()
 
             loadingMensa = param[0]
 
@@ -69,31 +66,13 @@ class EssenViewModel : ViewModel() {
             }
 
             try {
-                val doc: Document = Jsoup.connect(loadingMensa!!.url).get()
-                val essen: Elements = doc.select(".dish-description")
-                val preis: Elements = doc.select(".price")
-
-                for (e in essen.withIndex()) {
-                    var essenString = tagsRegex.replace(e.value.text(), "")
-
-                    var allergenMap = hashMapOf<String, List<String>>()
-                    for (match in allergenRegex.findAll(essenString)) {
-                        var ingredient = starRegex.replace(match.groupValues[1], "").trim()
-                        var allergenList = match.groupValues[2].split(", ")
-                        allergenMap[ingredient] = allergenList
-                    }
-
-                    essenString = bracketRegex.replace(essenString, "").trim()
-
-                    var studentenPreis = preisRegex.find(preis[e.index * 3].text())?.value + "\u202f€" ?: ""
-                    var bedienstetePreis = preisRegex.find(preis[e.index * 3 + 1].text())?.value + "\u202f€" ?: ""
-                    var gaestePreis = preisRegex.find(preis[e.index * 3 + 2].text())?.value + "\u202f€" ?: ""
-
-                    essenBeschreibung?.add(Essen(essenString, allergenMap, studentenPreis, bedienstetePreis, gaestePreis))
+                val request = Request.Builder()
+                        .url(loadingMensa!!.url)
+                        .build()
+                client.newCall(request).execute().use {
+                    essenBeschreibung = Klaxon().parseArray<Essen>(it.body()!!.string())!!
                 }
             } catch (e: SocketTimeoutException) {
-                return null
-            } catch (e: HttpStatusException) {
                 return null
             } catch (e: Exception) {
                 return null
