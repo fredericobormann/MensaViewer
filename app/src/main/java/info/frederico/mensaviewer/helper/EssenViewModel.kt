@@ -56,6 +56,25 @@ class EssenViewModel : ViewModel() {
         override fun doInBackground(vararg param: Mensa?): List<Essen>?{
             var essenBeschreibung: List<Essen>? = ArrayList<Essen>()
             val client = OkHttpClient()
+            val priceConverter = object: Converter{
+                override fun canConvert(cls: Class<*>): Boolean {
+                    return cls == String::class.java
+                }
+
+                override fun fromJson(jv: JsonValue): Any? {
+                    val jsonString: String? = jv.string
+                    if (jsonString != null){
+                        return jsonString.replace(".", ",")+" €"
+                    }
+                    else{
+                        return null
+                    }
+                }
+
+                override fun toJson(value: Any): String {
+                    return ""
+                }
+            }
 
             loadingMensa = param[0]
 
@@ -68,7 +87,7 @@ class EssenViewModel : ViewModel() {
                         .url(loadingMensa!!.url)
                         .build()
                 client.newCall(request).execute().use {
-                    essenBeschreibung = Klaxon().parseArray<Essen>(it.body()?.string() ?: "")
+                    essenBeschreibung = Klaxon().fieldConverter(KlaxonPrice::class, priceConverter).parseArray<Essen>(it.body()?.string() ?: "")
                 }
             } catch (e: SocketTimeoutException) {
                 return null
