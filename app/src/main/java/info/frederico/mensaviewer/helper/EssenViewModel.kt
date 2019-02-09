@@ -3,9 +3,7 @@ package info.frederico.mensaviewer.helper
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
-import com.beust.klaxon.JsonArray
-import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
+import com.beust.klaxon.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.SocketTimeoutException
@@ -56,7 +54,7 @@ class EssenViewModel : ViewModel() {
     private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, List<Essen>?>(){
         var loadingMensa: Mensa? = null
         override fun doInBackground(vararg param: Mensa?): List<Essen>?{
-            var essenBeschreibung: List<Essen> = ArrayList<Essen>()
+            var essenBeschreibung: List<Essen>? = ArrayList<Essen>()
             val client = OkHttpClient()
 
             loadingMensa = param[0]
@@ -70,7 +68,7 @@ class EssenViewModel : ViewModel() {
                         .url(loadingMensa!!.url)
                         .build()
                 client.newCall(request).execute().use {
-                    essenBeschreibung = Klaxon().parseArray<Essen>(it.body()!!.string())!!
+                    essenBeschreibung = Klaxon().parseArray<Essen>(it.body()?.string() ?: "")
                 }
             } catch (e: SocketTimeoutException) {
                 return null
