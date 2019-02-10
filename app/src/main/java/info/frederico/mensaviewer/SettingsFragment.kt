@@ -53,7 +53,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 return true
             }
         }
-        Toast.makeText(context, "Bitte wähle zwischen 1 und 4 Mensas aus", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, getString(R.string.error_message_preferred_canteen_selection), Toast.LENGTH_LONG).show()
         return false
     }
 
