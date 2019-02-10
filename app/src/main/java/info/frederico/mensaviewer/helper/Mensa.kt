@@ -8,25 +8,26 @@ import info.frederico.mensaviewer.R
  * Created by fredd on 14.07.2018.
  */
 enum class Mensa(val description : String, val icon : Int, val navigationViewId : Int, val number : Int) {
-    STUDIERENDENHAUS("Studierendenhaus", R.drawable.ic_home_black_24dp, View.generateViewId(), 310),
-    INFORMATIKUM("Informatikum", R.drawable.ic_baseline_computer_24px, View.generateViewId(), 580),
-    CAMPUS("Campus", R.drawable.ic_baseline_account_balance_24px, View.generateViewId(), 340),
-    HARBURG("Harburg", R.drawable.ic_baseline_h_24px, View.generateViewId(), 570),
-    ARMGARTSTRASSE("Armgartstraße", R.drawable.ic_baseline_a_24px, View.generateViewId(), 590),
-    BERGEDORF("Bergedorf", R.drawable.ic_baseline_b_24px, View.generateViewId(), 520),
-    BERLINERTOR("Berliner Tor", R.drawable.ic_baseline_b_24px, View.generateViewId(), 530),
-    BOTANISCHERGARTEN("Botanischer Garten", R.drawable.ic_baseline_b_24px, View.generateViewId(), 560),
-    BLS("Bucerius-Law-School", R.drawable.ic_baseline_b_24px, View.generateViewId(), 410),
-    CAFEALEX("Café Alexanderstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 660),
-    CAFEMITTEL("Café Mittelweg", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 690),
-    CAFEBERLINER("Café Berliner Tor", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 531),
-    CAFECFEL("Café CFEL", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 680),
-    CAFEJUNG("Café Jungiusstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 610),
-    FINKENAU("Finkenau", R.drawable.ic_baseline_f_24px, View.generateViewId(), 420),
-    GEOMATIKUM("Geomatikum", R.drawable.ic_functions_black_24dp, View.generateViewId(), 540),
-    HCU("HCU", R.drawable.ic_baseline_h_24px, View.generateViewId(), 430),
-    UEBERSEE("Überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 380);
+    ARMGARTSTRASSE("Armgartstraße", R.drawable.ic_baseline_a_24px, View.generateViewId(), 15),
+    BERGEDORF("Bergedorf", R.drawable.ic_baseline_b_24px, View.generateViewId(), 1),
+    BERLINERTOR("Berliner Tor", R.drawable.ic_baseline_b_24px, View.generateViewId(), 12),
+    BOTANISCHERGARTEN("Botanischer Garten", R.drawable.ic_baseline_local_florist_24px, View.generateViewId(), 16),
+    BLS("Bucerius-Law-School", R.drawable.ic_baseline_gavel_24px, View.generateViewId(), 2),
+    CAFEALEX("Café Alexanderstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 17),
+    CAFEBERLINER("Café Berliner Tor", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 3),
+    CAFECFEL("Café CFEL", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 4),
+    CAFEJUNG("Café Jungiusstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 5),
+    CAFEMITTEL("Café Mittelweg", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 19),
+    CAMPUS("Campus", R.drawable.ic_baseline_account_balance_24px, View.generateViewId(), 6),
+    DESY("DESY-Kantine", R.drawable.ic_atom, View.generateViewId(), 14),
+    FINKENAU("Finkenau", R.drawable.ic_baseline_f_24px, View.generateViewId(), 18),
+    GEOMATIKUM("Geomatikum", R.drawable.ic_baseline_domain_48px, View.generateViewId(), 7),
+    HARBURG("Harburg", R.drawable.ic_baseline_h_24px, View.generateViewId(), 8),
+    HCU("HCU", R.drawable.ic_baseline_h_24px, View.generateViewId(), 20),
+    INFORMATIKUM("Informatikum", R.drawable.ic_baseline_computer_24px, View.generateViewId(), 10),
+    STUDIERENDENHAUS("Studierendenhaus", R.drawable.ic_home_black_24dp, View.generateViewId(), 11),
+    UEBERSEE("Überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 13);
 
     val url : String
-    get() = "https://speiseplan.studierendenwerk-hamburg.de/de/" + number + "/2018/0/"
+    get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/today/"
 }
