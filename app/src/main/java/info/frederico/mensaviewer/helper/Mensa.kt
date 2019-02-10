@@ -15,7 +15,7 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     BLS("Bucerius-Law-School", R.drawable.ic_baseline_gavel_24px, View.generateViewId(), 2),
     CAFEALEX("Café Alexanderstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 17),
     CAFEBERLINER("Café Berliner Tor", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 3),
-    CAFECFEL("Café CFEL", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 4),
+    CAFECFEL("Café CFEL", R.drawable.ic_cfel_icon, View.generateViewId(), 4),
     CAFEJUNG("Café Jungiusstraße", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 5),
     CAFEMITTEL("Café Mittelweg", R.drawable.ic_local_cafe_black_24dp, View.generateViewId(), 19),
     CAMPUS("Campus", R.drawable.ic_baseline_account_balance_24px, View.generateViewId(), 6),
