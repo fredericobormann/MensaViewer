@@ -10,8 +10,8 @@ android {
         applicationId "info.frederico.mensaviewer"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 13
-        versionName "0.6"
+        versionCode 14
+        versionName "0.6.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
