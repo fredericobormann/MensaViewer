@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         tv_error_message_internet.text = getString(R.string.error_message_navigation)
         my_recycler_view.visibility = View.INVISIBLE
         tv_error_message_internet.visibility = View.VISIBLE
+        swipe_container.visibility = View.INVISIBLE
     }
 
     /**
@@ -199,6 +200,7 @@ class MainActivity : AppCompatActivity() {
             item.icon = getDrawable(mensa.icon)
             viewIdMensaMap[item.itemId] = mensa
         }
+        swipe_container.visibility = View.VISIBLE
     }
 
     /**
