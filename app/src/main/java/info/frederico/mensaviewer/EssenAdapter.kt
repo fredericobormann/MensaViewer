@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.view.View
 import kotlinx.android.synthetic.main.essenseintrag_view.view.*
 import info.frederico.mensaviewer.helper.Essen
+import info.frederico.mensaviewer.helper.Essensplan
+import info.frederico.mensaviewer.helper.ViewableDateElement
 
-class EssenAdapter(private var essensplan: List<Essen>, private val context: Context) :
+class EssenAdapter(private var essensplan: Essensplan, private val context: Context) :
 RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -33,21 +35,28 @@ RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.view.essensTextView.text = essensplan[position].bezeichnung
-        when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
-            context.getString(R.string.pref_usergroup_studentValue) -> {
-                holder.view.preisTextView.text = essensplan[position].studentenPreis
+        if(essensplan.getViewableEssensplan()[position] is Essen){
+            val currentEssen = essensplan.getViewableEssensplan()[position] as Essen
+            holder.view.essensTextView.text = currentEssen.bezeichnung
+            when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
+                context.getString(R.string.pref_usergroup_studentValue) -> {
+                    holder.view.preisTextView.text = currentEssen.studentenPreis
+                }
+                context.getString(R.string.pref_usergroup_employeeValue) -> {
+                    holder.view.preisTextView.text = currentEssen.bedienstetePreis
+                }
             }
-            context.getString(R.string.pref_usergroup_employeeValue) -> {
-                holder.view.preisTextView.text = essensplan[position].bedienstetePreis
-            }
+        } else if(essensplan.getViewableEssensplan()[position] is ViewableDateElement){
+            val currentDateElement = essensplan.getViewableEssensplan()[position] as ViewableDateElement
+            holder.view.essensTextView.text = currentDateElement.datestring
+            holder.view.preisTextView.text = ""
         }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = essensplan.size
+    override fun getItemCount() = essensplan.getViewableEssensplan().size
 
-    fun setEssensplan(newEssensplan : List<Essen>){
+    fun setEssensplan(newEssensplan : Essensplan){
         essensplan = newEssensplan
         notifyDataSetChanged()
     }

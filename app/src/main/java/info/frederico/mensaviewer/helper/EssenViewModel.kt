@@ -9,8 +9,8 @@ import okhttp3.Request
 import java.net.SocketTimeoutException
 
 class EssenViewModel : ViewModel() {
-    val essen: MutableLiveData<List<Essen>> by lazy {
-        MutableLiveData<List<Essen>>()
+    val essen: MutableLiveData<Essensplan> by lazy {
+        MutableLiveData<Essensplan>()
     }
     var mensa: Mensa? = null
     set(newMensa) {
@@ -23,7 +23,7 @@ class EssenViewModel : ViewModel() {
             }
         }
     }
-    val mMensaplanCache = HashMap<Mensa, List<Essen>?>()
+    val mMensaplanCache = HashMap<Mensa, Essensplan?>()
 
     /**
      * Notifies observers to refresh data, although dataset has not changed.
@@ -51,10 +51,31 @@ class EssenViewModel : ViewModel() {
      * Asynchronous Task to load Mensa data from internet.
      * mensa LiveData will be null, if an error occurred.
      */
-    private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, List<Essen>?>(){
+    private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, Essensplan?>(){
         var loadingMensa: Mensa? = null
-        override fun doInBackground(vararg param: Mensa?): List<Essen>?{
-            var essenBeschreibung: List<Essen>? = ArrayList<Essen>()
+        override fun doInBackground(vararg param: Mensa?): Essensplan?{
+            var essensplan: Essensplan?
+            var essensplanToday: List<Essen>?
+            var essensplanNextDay: List<Essen>?
+
+            loadingMensa = param[0]
+
+            if(loadingMensa == null){
+                return null
+            }
+
+            try {
+                essensplanToday = getEssenslisteByUrl(loadingMensa!!.urlToday)
+                essensplanNextDay = getEssenslisteByUrl(loadingMensa!!.urlNextDay)
+            } catch (e: SocketTimeoutException) {
+                return null
+            } catch (e: Exception) {
+                return null
+            }
+            return Essensplan(essensplanToday, essensplanNextDay, essensplanNextDay?.get(0)?.date)
+        }
+
+        fun getEssenslisteByUrl(url: String): List<Essen>?{
             val client = OkHttpClient()
             val priceConverter = object: Converter{
                 override fun canConvert(cls: Class<*>): Boolean {
@@ -76,28 +97,15 @@ class EssenViewModel : ViewModel() {
                 }
             }
 
-            loadingMensa = param[0]
-
-            if(loadingMensa == null){
-                return null
+            val request = Request.Builder()
+                    .url(url)
+                    .build()
+            client.newCall(request).execute().use {
+                return Klaxon().fieldConverter(KlaxonPrice::class, priceConverter).parseArray<Essen>(it.body()?.string() ?: "")
             }
-
-            try {
-                val request = Request.Builder()
-                        .url(loadingMensa!!.url)
-                        .build()
-                client.newCall(request).execute().use {
-                    essenBeschreibung = Klaxon().fieldConverter(KlaxonPrice::class, priceConverter).parseArray<Essen>(it.body()?.string() ?: "")
-                }
-            } catch (e: SocketTimeoutException) {
-                return null
-            } catch (e: Exception) {
-                return null
-            }
-            return essenBeschreibung
         }
 
-        override fun onPostExecute(result: List<Essen>?) {
+        override fun onPostExecute(result: Essensplan?) {
             super.onPostExecute(result)
             if(mensa == loadingMensa){
                 essen.value = result

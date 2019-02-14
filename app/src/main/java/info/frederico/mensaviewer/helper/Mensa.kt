@@ -28,6 +28,8 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     STUDIERENDENHAUS("Studierendenhaus", R.drawable.ic_home_black_24dp, View.generateViewId(), 11),
     UEBERSEE("Überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 13);
 
-    val url : String
+    val urlToday : String
     get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/today/"
+    val urlNextDay : String
+    get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/tomorrow/"
 }
