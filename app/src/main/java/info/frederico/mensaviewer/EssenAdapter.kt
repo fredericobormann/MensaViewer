@@ -10,46 +10,63 @@ import kotlinx.android.synthetic.main.essenseintrag_view.view.*
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.ViewableDateElement
+import kotlinx.android.synthetic.main.datumseintrag_view.view.*
 
 class EssenAdapter(private var essensplan: Essensplan, private val context: Context) :
-RecyclerView.Adapter<EssenAdapter.ViewHolder>() {
+RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class EssenViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class DateViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    override fun getItemViewType(position: Int): Int {
+        if (essensplan.getViewableEssensplan()[position] is Essen){
+            return 0
+        } else {
+            return 1
+        }
+    }
 
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): EssenAdapter.ViewHolder {
-        // create a new view
-        val textView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.essenseintrag_view, parent, false)
-        // set the view's size, margins, paddings and layout parameters
-        return ViewHolder(textView)
+                                    viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == 0){
+            // create a new view
+            val essenseintragView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.essenseintrag_view, parent, false)
+            // set the view's size, margins, paddings and layout parameters
+            return EssenViewHolder(essenseintragView)
+        } else {
+            val datumseintragView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.datumseintrag_view, parent, false)
+            return DateViewHolder(datumseintragView)
+        }
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        if(essensplan.getViewableEssensplan()[position] is Essen){
+        if(holder.itemViewType == 0){
+            val essenViewHolder = holder as EssenViewHolder
             val currentEssen = essensplan.getViewableEssensplan()[position] as Essen
-            holder.view.essensTextView.text = currentEssen.bezeichnung
+            essenViewHolder.view.essensTextView.text = currentEssen.bezeichnung
             when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
                 context.getString(R.string.pref_usergroup_studentValue) -> {
-                    holder.view.preisTextView.text = currentEssen.studentenPreis
+                    essenViewHolder.view.preisTextView.text = currentEssen.studentenPreis
                 }
                 context.getString(R.string.pref_usergroup_employeeValue) -> {
-                    holder.view.preisTextView.text = currentEssen.bedienstetePreis
+                    essenViewHolder.view.preisTextView.text = currentEssen.bedienstetePreis
                 }
             }
-        } else if(essensplan.getViewableEssensplan()[position] is ViewableDateElement){
+        } else if(holder.itemViewType == 1){
+            val dateViewHolder = holder as DateViewHolder
             val currentDateElement = essensplan.getViewableEssensplan()[position] as ViewableDateElement
-            holder.view.essensTextView.text = currentDateElement.datestring
-            holder.view.preisTextView.text = ""
+            dateViewHolder.view.datumsTextView.text = currentDateElement.datestring
         }
     }
 
