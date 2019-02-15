@@ -72,11 +72,7 @@ class EssenViewModel : ViewModel() {
             } catch (e: Exception) {
                 return null
             }
-            var dateString = ""
-            if (essensplanNextDay?.isEmpty() == false){
-                dateString = essensplanNextDay[0].date
-            }
-            return Essensplan(essensplanToday, essensplanNextDay, dateString)
+            return Essensplan(essensplanToday, essensplanNextDay)
         }
 
         fun getEssenslisteByUrl(url: String): List<Essen>?{
