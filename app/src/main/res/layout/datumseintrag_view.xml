@@ -15,7 +15,10 @@
             android:id="@+id/datumsTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:layout_weight="1"/>
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingBottom="5dp"
+            android:layout_weight="1"
+            android:textStyle="bold"/>
     </LinearLayout>
 </FrameLayout>
