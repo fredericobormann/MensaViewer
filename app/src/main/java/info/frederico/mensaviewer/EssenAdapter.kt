@@ -51,9 +51,10 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        val viewableEssensplan = essensplan.getViewableEssensplan()
         if(holder.itemViewType == 0){
             val essenViewHolder = holder as EssenViewHolder
-            val currentEssen = essensplan.getViewableEssensplan()[position] as Essen
+            val currentEssen = viewableEssensplan[position] as Essen
             essenViewHolder.view.essensTextView.text = currentEssen.bezeichnung
             when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
                 context.getString(R.string.pref_usergroup_studentValue) -> {
@@ -63,9 +64,14 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     essenViewHolder.view.preisTextView.text = currentEssen.bedienstetePreis
                 }
             }
+            if(position+1 == viewableEssensplan.size || viewableEssensplan[position+1] is ViewableDateElement){
+                essenViewHolder.view.lineTextView.visibility = View.INVISIBLE
+            } else{
+                essenViewHolder.view.lineTextView.visibility = View.VISIBLE
+            }
         } else if(holder.itemViewType == 1){
             val dateViewHolder = holder as DateViewHolder
-            val currentDateElement = essensplan.getViewableEssensplan()[position] as ViewableDateElement
+            val currentDateElement = viewableEssensplan[position] as ViewableDateElement
             dateViewHolder.view.datumsTextView.text = currentDateElement.datestring
         }
     }

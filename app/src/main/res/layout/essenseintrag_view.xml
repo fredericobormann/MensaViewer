@@ -16,7 +16,8 @@
             android:id="@+id/essensTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="15dp"
             android:layout_weight="1"/>
 
         <TextView
@@ -25,11 +26,13 @@
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
             android:layout_weight="0"
-            android:padding="20dp"/>
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="15dp"/>
     </LinearLayout>
 
 
     <TextView
+        android:id="@+id/lineTextView"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="#dddddd"
