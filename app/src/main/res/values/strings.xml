@@ -10,6 +10,8 @@
     <string name="error_message_navigation">Bitte wähle in den Einstellungen deine bevorzugten Mensen aus.</string>
     <string name="error_message_preferred_canteen_selection">Bitte wähle zwischen einer und vier Mensen aus.</string>
 
+    <string name="today">Heute</string>
+
     <string name="pref_usergroup" translatable="false">pref_usergroup</string>
     <string name="pref_usergroup_title">Preiskategorie</string>
     <string name="pref_usergroup_studentValue" translatable="false">pref_student</string>
