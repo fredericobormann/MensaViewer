@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.EssenViewModel
+import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.Mensa
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: EssenAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private var essensliste: List<Essen> = ArrayList<Essen>()
+    private var essensliste: Essensplan = Essensplan()
     private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private lateinit var evModel: EssenViewModel
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
 
-        val essenObserver = Observer<List<Essen>>{ result ->
+        val essenObserver = Observer<Essensplan>{ result ->
             if(result == null){
                 showInternetConnectionMessage()
             }
