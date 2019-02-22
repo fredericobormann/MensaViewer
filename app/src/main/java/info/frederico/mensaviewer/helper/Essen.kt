@@ -10,7 +10,7 @@ data class Essen @JvmOverloads constructor(
         val bezeichnung: String,
         @Json(name = "price")@KlaxonPrice
         val studentenPreis: String,
-        @Json(name = "price_staff")
+        @Json(name = "price_staff")@KlaxonPrice
         val bedienstetePreis: String,
         @Json(name = "date")
         val date: String = ""): ViewableEssenElement
