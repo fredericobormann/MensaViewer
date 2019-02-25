@@ -23,20 +23,20 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:visibility="gone"
             android:id="@+id/vegetarianImageView"
             android:src="@drawable/ic_vegetarian"
-            android:padding="15dp"/>
+            android:layout_margin="15dp"/>
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:visibility="gone"
             android:id="@+id/veganImageView"
             android:src="@drawable/ic_vegan"
-            android:padding="15dp"/>
+            android:layout_margin="15dp"/>
 
         <TextView
             android:id="@+id/preisTextView"
