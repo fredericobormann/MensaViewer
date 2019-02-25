@@ -56,6 +56,16 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val essenViewHolder = holder as EssenViewHolder
             val currentEssen = viewableEssensplan[position] as Essen
             essenViewHolder.view.essensTextView.text = currentEssen.bezeichnung
+            if(currentEssen.vegan){
+                essenViewHolder.view.veganImageView.visibility = View.VISIBLE
+                essenViewHolder.view.vegetarianImageView.visibility = View.GONE
+            } else if(currentEssen.vegetarian) {
+                essenViewHolder.view.vegetarianImageView.visibility = View.VISIBLE
+                essenViewHolder.view.veganImageView.visibility = View.GONE
+            } else {
+                essenViewHolder.view.vegetarianImageView.visibility = View.GONE
+                essenViewHolder.view.veganImageView.visibility = View.GONE
+            }
             when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
                 context.getString(R.string.pref_usergroup_studentValue) -> {
                     essenViewHolder.view.preisTextView.text = currentEssen.studentenPreis
