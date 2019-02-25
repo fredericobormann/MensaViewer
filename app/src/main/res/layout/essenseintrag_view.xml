@@ -26,7 +26,8 @@
             android:scaleType="centerInside"
             android:visibility="invisible"
             android:id="@+id/veggieImageView"
-            android:layout_margin="15dp"/>
+            android:layout_marginVertical="15dp"
+            android:tint="@android:color/tab_indicator_text"/>
 
         <TextView
             android:id="@+id/preisTextView"
