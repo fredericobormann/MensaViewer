@@ -57,14 +57,11 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val currentEssen = viewableEssensplan[position] as Essen
             essenViewHolder.view.essensTextView.text = currentEssen.bezeichnung
             if(currentEssen.vegan){
-                essenViewHolder.view.veganImageView.visibility = View.VISIBLE
-                essenViewHolder.view.vegetarianImageView.visibility = View.GONE
+                showVeganIcon(essenViewHolder)
             } else if(currentEssen.vegetarian) {
-                essenViewHolder.view.vegetarianImageView.visibility = View.VISIBLE
-                essenViewHolder.view.veganImageView.visibility = View.GONE
+                showVegetarianIcon(essenViewHolder)
             } else {
-                essenViewHolder.view.vegetarianImageView.visibility = View.GONE
-                essenViewHolder.view.veganImageView.visibility = View.GONE
+                hideVeggieIcon(essenViewHolder)
             }
             when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
                 context.getString(R.string.pref_usergroup_studentValue) -> {
@@ -84,6 +81,20 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val currentDateElement = viewableEssensplan[position] as ViewableDateElement
             dateViewHolder.view.datumsTextView.text = currentDateElement.datestring
         }
+    }
+
+    fun showVegetarianIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegetarian)
+        essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
+    }
+
+    fun showVeganIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegan)
+        essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
+    }
+
+    fun hideVeggieIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.visibility = View.INVISIBLE
     }
 
     // Return the size of your dataset (invoked by the layout manager)
