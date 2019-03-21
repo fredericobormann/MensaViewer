@@ -56,6 +56,13 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val essenViewHolder = holder as EssenViewHolder
             val currentEssen = viewableEssensplan[position] as Essen
             essenViewHolder.view.essensTextView.text = currentEssen.bezeichnung
+            if(currentEssen.vegan){
+                showVeganIcon(essenViewHolder)
+            } else if(currentEssen.vegetarian) {
+                showVegetarianIcon(essenViewHolder)
+            } else {
+                hideVeggieIcon(essenViewHolder)
+            }
             when(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_usergroup), context.getString(R.string.pref_usergroup_defaultValue))){
                 context.getString(R.string.pref_usergroup_studentValue) -> {
                     essenViewHolder.view.preisTextView.text = currentEssen.studentenPreis
@@ -74,6 +81,20 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val currentDateElement = viewableEssensplan[position] as ViewableDateElement
             dateViewHolder.view.datumsTextView.text = currentDateElement.datestring
         }
+    }
+
+    fun showVegetarianIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegetarian)
+        essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
+    }
+
+    fun showVeganIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegan)
+        essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
+    }
+
+    fun hideVeggieIcon(essenViewHolder: EssenViewHolder){
+        essenViewHolder.view.veggieImageView.visibility = View.INVISIBLE
     }
 
     // Return the size of your dataset (invoked by the layout manager)

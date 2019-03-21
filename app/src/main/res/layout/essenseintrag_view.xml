@@ -16,9 +16,21 @@
             android:id="@+id/essensTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:scaleType="centerInside"
+            android:visibility="invisible"
+            android:id="@+id/veggieImageView"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="15dp"
+            android:tint="@android:color/tab_indicator_text"/>
 
         <TextView
             android:id="@+id/preisTextView"
@@ -26,8 +38,10 @@
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
             android:layout_weight="0"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="15dp"/>
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
     </LinearLayout>
 
 

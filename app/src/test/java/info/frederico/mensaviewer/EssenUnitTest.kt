@@ -55,10 +55,10 @@ class EssenUnitTest {
                 "    }\n" +
                 "]"
         val testList = Klaxon().parseArray<Essen>(testJson)
-        val expectedList: List<Essen> = listOf(Essen("Vegane Carbonara mit Tofuwürfel, Conchiglie", "2.20", "3.50"),
-            Essen("Krakauer Bratwurst, Erbsen-Karotten Gemüse, Zwiebelsoße", "2.20", "3.35"),
-                Essen("Gebratenes Kabeljaufilet, Orangenhollandaise", "3.95", "4.65"),
-                Essen("Wir kochen was Sie lieben..., Hähnchenkeule, Reis, Salat mit Balsamico Dressing, Geflügelrahmsoße", "2.90", "4.20"))
+        val expectedList: List<Essen> = listOf(Essen("Vegane Carbonara mit Tofuwürfel, Conchiglie", "2.20", "3.50", "2019-02-08", false, true),
+            Essen("Krakauer Bratwurst, Erbsen-Karotten Gemüse, Zwiebelsoße", "2.20", "3.35", "2019-02-08", false, false),
+                Essen("Gebratenes Kabeljaufilet, Orangenhollandaise", "3.95", "4.65", "2019-02-08", false, false),
+                Essen("Wir kochen was Sie lieben..., Hähnchenkeule, Reis, Salat mit Balsamico Dressing, Geflügelrahmsoße", "2.90", "4.20", "2019-02-08", false, false))
         print(testList)
         assertEquals(expectedList, testList)
     }
