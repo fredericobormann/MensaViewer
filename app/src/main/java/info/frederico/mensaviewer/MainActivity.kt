@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.EssenViewModel
 import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.Mensa
@@ -241,9 +240,14 @@ class MainActivity : AppCompatActivity() {
         if (item != null) {
             when (item.itemId) {
                 R.id.filter -> {
-                    val filterMenu = PopupMenu(this, findViewById(R.id.filter))
-                    filterMenu.inflate(R.menu.filter_menu)
-                    filterMenu.show()
+                    val filterMenu = PopupMenu(this, findViewById(R.id.filter)).apply {
+                        inflate(R.menu.filter_menu)
+                        setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
+                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+                        val selectedItemId = sharedPreferences.getInt(getString(R.string.pref_filter), 0)
+                        menu.getItem(selectedItemId).isChecked = true
+                        show()
+                    }
                 }
                 R.id.licenses -> {
                     val intent = Intent(this, LicenseActivity::class.java)
@@ -258,6 +262,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun onFilterMenuItemSelected(item: MenuItem): Boolean {
+        item.isChecked = true
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        with(sharedPreferences.edit()){
+            putInt(getString(R.string.pref_filter), item.order)
+            apply()
+        }
+        evModel.getData()
+        return true
     }
 
     /**

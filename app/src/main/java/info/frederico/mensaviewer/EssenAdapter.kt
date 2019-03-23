@@ -9,6 +9,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.essenseintrag_view.view.*
 import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.Essensplan
+import info.frederico.mensaviewer.helper.VeggieFilterOption
 import info.frederico.mensaviewer.helper.ViewableDateElement
 import kotlinx.android.synthetic.main.datumseintrag_view.view.*
 
@@ -21,9 +22,14 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // Each data item is just a string in this case that is shown in a TextView.
     class EssenViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     class DateViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    fun getVeggieFilterOption(): VeggieFilterOption{
+        return VeggieFilterOption.values()[sharedPreferences.getInt(MensaViewer.res.getString(R.string.pref_filter),0)]
+    }
 
     override fun getItemViewType(position: Int): Int {
-        if (essensplan.getViewableEssensplan()[position] is Essen){
+        if (essensplan.getViewableEssensplan(getVeggieFilterOption())[position] is Essen){
             return 0
         } else {
             return 1
@@ -51,7 +57,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        val viewableEssensplan = essensplan.getViewableEssensplan()
+        val viewableEssensplan = essensplan.getViewableEssensplan(getVeggieFilterOption())
         if(holder.itemViewType == 0){
             val essenViewHolder = holder as EssenViewHolder
             val currentEssen = viewableEssensplan[position] as Essen
@@ -98,7 +104,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = essensplan.getViewableEssensplan().size
+    override fun getItemCount() = essensplan.getViewableEssensplan(getVeggieFilterOption()).size
 
     fun setEssensplan(newEssensplan : Essensplan){
         essensplan = newEssensplan

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO Replace with string ressources-->
-    <item android:title="alles anzeigen"
-        android:id="@+id/show_all_dishes"/>
-    <item android:title="nur vegetarisch"
-        android:id="@+id/show_only_vegetarian"/>
-    <item android:title="nur vegan"
-        android:id="@+id/show_only_vegan"/>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/show_all_dishes"
+            android:id="@+id/show_all_dishes"
+            android:orderInCategory="0"/>
+        <item android:title="@string/show_only_vegetarian"
+            android:id="@+id/show_only_vegetarian"
+            android:orderInCategory="1"/>
+        <item android:title="@string/show_only_vegan"
+            android:id="@+id/show_only_vegan"
+            android:orderInCategory="2"/>
+    </group>
 
 </menu>

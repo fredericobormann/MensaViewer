@@ -12,4 +12,8 @@
     <string name="pref_mensa_title">Mensa</string>
     <string name="prefs">Einstellungen</string>
     <string name= "today">Heute</string>
+    <string name="show_all_dishes">alles anzeigen</string>
+    <string name="show_only_vegetarian">nur vegetarisch</string>
+    <string name="show_only_vegan">nur vegan</string>
+    <string name="pref_filter_title">Filter</string>
 </resources>
