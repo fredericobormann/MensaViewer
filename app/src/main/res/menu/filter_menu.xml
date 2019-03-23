@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- TODO Replace with string ressources-->
+    <item android:title="alles anzeigen"
+        android:id="@+id/show_all_dishes"/>
+    <item android:title="nur vegetarisch"
+        android:id="@+id/show_only_vegetarian"/>
+    <item android:title="nur vegan"
+        android:id="@+id/show_only_vegan"/>
+
+</menu>

@@ -9,6 +9,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
@@ -239,6 +240,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
             when (item.itemId) {
+                R.id.filter -> {
+                    val filterMenu = PopupMenu(this, findViewById(R.id.filter))
+                    filterMenu.inflate(R.menu.filter_menu)
+                    filterMenu.show()
+                }
                 R.id.licenses -> {
                     val intent = Intent(this, LicenseActivity::class.java)
                     startActivity(intent)
