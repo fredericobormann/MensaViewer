@@ -16,4 +16,5 @@
     <string name="show_only_vegetarian">nur vegetarisch</string>
     <string name="show_only_vegan">nur vegan</string>
     <string name="pref_filter_title">Filter</string>
+    <string name="no_result_filter_message">Leider gibt es hier kein Essen, welches deinen Filterkriterien entspricht.</string>
 </resources>

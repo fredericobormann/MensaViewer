@@ -17,12 +17,18 @@ class Essensplan(val today: List<Essen>? = ArrayList(), val nextday: List<Essen>
             viewableEssensplan.add(ViewableDateElement(MensaViewer.res.getString(R.string.today) + ", " + outputDateFormatWithoutWeekday.format(dateOfToday)))
             val todayFiltered = today.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }
             viewableEssensplan.addAll(todayFiltered)
+            if(todayFiltered.isEmpty()){
+                viewableEssensplan.add(ViewableTextElement(MensaViewer.res.getString(R.string.no_result_filter_message)))
+            }
         }
         if (nextday != null && !nextday.isEmpty()){
             val dateOfNextDay = jsonDateFormat.parse(nextday[0].date)
             viewableEssensplan.add(ViewableDateElement(outputDateFormat.format(dateOfNextDay)))
             val nextdayFiltered = nextday.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }
             viewableEssensplan.addAll(nextdayFiltered)
+            if(nextdayFiltered.isEmpty()){
+                viewableEssensplan.add(ViewableTextElement(MensaViewer.res.getString(R.string.no_result_filter_message)))
+            }
         }
         return viewableEssensplan
     }

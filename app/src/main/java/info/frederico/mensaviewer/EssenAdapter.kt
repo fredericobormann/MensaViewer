@@ -6,12 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
+import android.widget.TextView
+import info.frederico.mensaviewer.helper.*
 import kotlinx.android.synthetic.main.essenseintrag_view.view.*
-import info.frederico.mensaviewer.helper.Essen
-import info.frederico.mensaviewer.helper.Essensplan
-import info.frederico.mensaviewer.helper.VeggieFilterOption
-import info.frederico.mensaviewer.helper.ViewableDateElement
 import kotlinx.android.synthetic.main.datumseintrag_view.view.*
+import kotlinx.android.synthetic.main.texteintrag_view.view.*
 
 class EssenAdapter(private var essensplan: Essensplan, private val context: Context) :
 RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -22,6 +21,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // Each data item is just a string in this case that is shown in a TextView.
     class EssenViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     class DateViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class TexteintragViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun getVeggieFilterOption(): VeggieFilterOption{
@@ -31,8 +31,10 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         if (essensplan.getViewableEssensplan(getVeggieFilterOption())[position] is Essen){
             return 0
-        } else {
+        } else if (essensplan.getViewableEssensplan((getVeggieFilterOption()))[position] is ViewableDateElement){
             return 1
+        } else {
+            return 2
         }
     }
 
@@ -46,10 +48,14 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .inflate(R.layout.essenseintrag_view, parent, false)
             // set the view's size, margins, paddings and layout parameters
             return EssenViewHolder(essenseintragView)
-        } else {
+        } else if (viewType == 1){
             val datumseintragView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.datumseintrag_view, parent, false)
             return DateViewHolder(datumseintragView)
+        } else {
+            val texteintragView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.texteintrag_view, parent, false)
+            return TexteintragViewHolder(texteintragView)
         }
     }
 
@@ -77,15 +83,24 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     essenViewHolder.view.preisTextView.text = currentEssen.bedienstetePreis
                 }
             }
-            if(position+1 == viewableEssensplan.size || viewableEssensplan[position+1] is ViewableDateElement){
-                essenViewHolder.view.lineTextView.visibility = View.INVISIBLE
-            } else{
-                essenViewHolder.view.lineTextView.visibility = View.VISIBLE
-            }
+            hideBottomLineIfNecessary(essenViewHolder.view.lineTextView, position, viewableEssensplan)
         } else if(holder.itemViewType == 1){
             val dateViewHolder = holder as DateViewHolder
             val currentDateElement = viewableEssensplan[position] as ViewableDateElement
             dateViewHolder.view.datumsTextView.text = currentDateElement.datestring
+        } else {
+            val textViewHolder = holder as TexteintragViewHolder
+            val currentTextElement = viewableEssensplan[position] as ViewableTextElement
+            textViewHolder.view.textTextView.text = currentTextElement.text
+            hideBottomLineIfNecessary(textViewHolder.view.textViewBottomLine, position, viewableEssensplan)
+        }
+    }
+
+    fun hideBottomLineIfNecessary(lineTextView: TextView, position: Int, viewableEssensplan: List<ViewableEssenElement>){
+        if(position+1 == viewableEssensplan.size || viewableEssensplan[position+1] is ViewableDateElement){
+            lineTextView.visibility = View.INVISIBLE
+        } else{
+            lineTextView.visibility = View.VISIBLE
         }
     }
 
