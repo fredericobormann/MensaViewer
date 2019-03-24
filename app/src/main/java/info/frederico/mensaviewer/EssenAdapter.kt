@@ -25,7 +25,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun getVeggieFilterOption(): VeggieFilterOption{
-        return VeggieFilterOption.values()[sharedPreferences.getInt(MensaViewer.res.getString(R.string.pref_filter),0)]
+        return VeggieFilterOption.valueOf(sharedPreferences.getString(MensaViewer.res.getString(R.string.pref_filter),VeggieFilterOption.SHOW_ALL_DISHES.toString()))
     }
 
     override fun getItemViewType(position: Int): Int {

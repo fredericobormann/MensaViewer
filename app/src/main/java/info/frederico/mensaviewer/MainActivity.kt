@@ -17,6 +17,7 @@ import android.view.View
 import info.frederico.mensaviewer.helper.EssenViewModel
 import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.Mensa
+import info.frederico.mensaviewer.helper.VeggieFilterOption
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -244,8 +245,8 @@ class MainActivity : AppCompatActivity() {
                         inflate(R.menu.filter_menu)
                         setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
                         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
-                        val selectedItemId = sharedPreferences.getInt(getString(R.string.pref_filter), 0)
-                        menu.getItem(selectedItemId).isChecked = true
+                        val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString()))
+                        menu.getItem(selectedItem.ordinal).isChecked = true
                         show()
                     }
                 }
@@ -268,7 +269,7 @@ class MainActivity : AppCompatActivity() {
         item.isChecked = true
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         with(sharedPreferences.edit()){
-            putInt(getString(R.string.pref_filter), item.order)
+            putString(getString(R.string.pref_filter), VeggieFilterOption.values()[item.order].toString())
             apply()
         }
         evModel.getData()
