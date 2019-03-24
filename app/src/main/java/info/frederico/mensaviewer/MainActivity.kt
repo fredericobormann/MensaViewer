@@ -9,14 +9,15 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import info.frederico.mensaviewer.helper.Essen
 import info.frederico.mensaviewer.helper.EssenViewModel
 import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.Mensa
+import info.frederico.mensaviewer.helper.VeggieFilterOption
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -239,6 +240,16 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
             when (item.itemId) {
+                R.id.filter -> {
+                    val filterMenu = PopupMenu(this, findViewById(R.id.filter)).apply {
+                        inflate(R.menu.filter_menu)
+                        setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
+                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+                        val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString()))
+                        menu.getItem(selectedItem.ordinal).isChecked = true
+                        show()
+                    }
+                }
                 R.id.licenses -> {
                     val intent = Intent(this, LicenseActivity::class.java)
                     startActivity(intent)
@@ -252,6 +263,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun onFilterMenuItemSelected(item: MenuItem): Boolean {
+        item.isChecked = true
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        with(sharedPreferences.edit()){
+            putString(getString(R.string.pref_filter), VeggieFilterOption.values()[item.order].toString())
+            apply()
+        }
+        evModel.getData()
+        return true
     }
 
     /**

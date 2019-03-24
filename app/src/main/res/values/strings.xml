@@ -22,6 +22,8 @@
 
     <string name="prefs">Einstellungen</string>
 
+    <string name="pref_filter" translatable="false">pref_filter</string>
+
     <string name="pref_mensa" translatable="false">pref_mensa</string>
     <string name="pref_mensa_title">Mensa</string>
     <string name="pref_mensa_studierendenhausValue" translatable="false">STUDIERENDENHAUS</string>
@@ -63,4 +65,9 @@
     <string name="pref_mensa_hcu" translatable="false">HCU</string>
     <string name="pref_mensa_ueberseering" translatable="false">Überseering</string>
     <string name="pref_mensa_desy" translatable="false">DESY-Kantine</string>
+    <string name="show_all_dishes">alles anzeigen</string>
+    <string name="show_only_vegetarian">nur vegetarisch</string>
+    <string name="show_only_vegan">nur vegan</string>
+    <string name="pref_filter_title">Filter</string>
+    <string name="no_result_filter_message">Leider gibt es hier kein Essen, welches deinen Filterkriterien entspricht.</string>
 </resources>

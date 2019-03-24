@@ -12,4 +12,9 @@
     <string name="pref_mensa_title">Canteen</string>
     <string name="prefs">Settings</string>
     <string name="today">Today</string>
+    <string name="show_all_dishes">show all dishes</string>
+    <string name="show_only_vegetarian">only vegetarian</string>
+    <string name="show_only_vegan">only vegan</string>
+    <string name="pref_filter_title">Filter</string>
+    <string name="no_result_filter_message">Sorry, there is no dish that matches your filter settings.</string>
 </resources>
