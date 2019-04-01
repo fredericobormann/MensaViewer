@@ -195,6 +195,9 @@ class MainActivity : AppCompatActivity() {
         var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), resources.getStringArray(R.array.pref_mensa_default).toSet())
         if(selectedMensas.isEmpty()){
             throw NavigationInvalidException()
+        } else {
+            // BottomNavigationBar is hidden by default / if it's empty
+            navigation.visibility = View.VISIBLE
         }
         for (m in selectedMensas) {
             val mensa = Mensa.valueOf(m)
