@@ -2,21 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
     <TextView
         android:id="@+id/textTextView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:padding="@dimen/margin_default"
         android:textAlignment="center"
         android:layout_weight="1"/>
-
 
     <TextView
         android:id="@+id/textViewBottomLine"
