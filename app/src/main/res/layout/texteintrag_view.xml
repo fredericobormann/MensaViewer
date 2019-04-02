@@ -6,6 +6,7 @@
     android:orientation="vertical">
     <TextView
         android:id="@+id/textTextView"
+        style="@style/Text.Body1.Primary"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/margin_default"
@@ -14,6 +15,7 @@
 
     <TextView
         android:id="@+id/textViewBottomLine"
+        style="@style/Text.Body1.Primary"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="#dddddd"
