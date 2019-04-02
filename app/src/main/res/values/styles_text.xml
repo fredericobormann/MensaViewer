@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This layout file contains all Android text styles suggested in the Google
+Material Design typography guidelines
+(https://material.io/guidelines/style/typography.html#typography-styles).
+
+There are styles for each size as well as styles for primary and secondary texts which inherit the
+respective size-only-styles.
+
+Updated regularly: https://gist.github.com/haukesomm/3c4985ec37af9ba8d132e302c5db5272
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Text"/>
+
+
+    <!-- size-only-styles -->
+
+    <style name="Text.Display4" tools:keep="@style/Text_Display4">
+        <item name="android:textSize">112sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Text.Display3" tools:keep="@style/Text_Display3">
+        <item name="android:textSize">56sp</item>
+    </style>
+
+    <style name="Text.Display2" tools:keep="@style/Text_Display2">
+        <item name="android:textSize">45sp</item>
+    </style>
+
+    <style name="Text.Display1" tools:keep="@style/Text_Display1">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="Text.Headline" tools:keep="@style/Text_Headline">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text.Title" tools:keep="@style/Text_Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Text.Subheading" tools:keep="@style/Text_Subheading">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Text.Body2" tools:keep="@style/Text_Body2">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.Body1" tools:keep="@style/Text_Body1">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Text.Caption" tools:keep="@style/Text_Caption">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <!-- primary and secondary styles -->
+
+    <style name="Text.Display4.Primary" parent="Text.Display4"
+        tools:keep="@style/Text_Display4_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Display4.Secondary" parent="Text.Display4"
+        tools:keep="@style/Text_Display4_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Display3.Primary" parent="Text.Display3"
+        tools:keep="@style/Text_Display3_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Display3.Secondary" parent="Text.Display3"
+        tools:keep="@style/Text_Display3_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Display2.Primary" parent="Text.Display2"
+        tools:keep="@style/Text_Display2_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Display2.Secondary" parent="Text.Display2"
+        tools:keep="@style/Text_Display2_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Display1.Primary" parent="Text.Display1"
+        tools:keep="@style/Text_Display1_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Display1.Secondary" parent="Text.Display1"
+        tools:keep="@style/Text_Display1_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Headline.Primary" parent="Text.Headline"
+        tools:keep="@style/Text_Headline_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Headline.Secondary" parent="Text.Headline"
+        tools:keep="@style/Text_Headline_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Title.Primary" parent="Text.Title"
+        tools:keep="@style/Text_Title_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Title.Secondary" parent="Text.Title"
+        tools:keep="@style/Text_Title_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Subheading.Primary" parent="Text.Subheading"
+        tools:keep="@style/Text_Subheading_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Subheading.Secondary" parent="Text.Subheading"
+        tools:keep="@style/Text_Subheading_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Body2.Primary" parent="Text.Body2"
+        tools:keep="@style/Text_Body2_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Body2.Secondary" parent="Text.Body2"
+        tools:keep="@style/Text_Body2_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Body1.Primary" parent="Text.Body1"
+        tools:keep="@style/Text_Body1_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Body1.Secondary" parent="Text.Body1"
+        tools:keep="@style/Text_Body1_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Body1.Important" parent="Text.Body1"
+        tools:keep="@style/Text_Body1_Important">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Text.Caption.Primary" parent="Text.Caption"
+        tools:keep="@style/Text_Caption_Primary">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Text.Caption.Secondary" parent="Text.Caption"
+        tools:keep="@style/Text_Caption_Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+</resources>
