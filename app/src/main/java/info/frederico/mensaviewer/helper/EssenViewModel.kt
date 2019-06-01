@@ -2,8 +2,12 @@ package info.frederico.mensaviewer.helper
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.SharedPreferences
 import android.os.AsyncTask
+import android.preference.PreferenceManager
 import com.beust.klaxon.*
+import info.frederico.mensaviewer.MensaViewer
+import info.frederico.mensaviewer.R
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.SocketTimeoutException
@@ -12,15 +16,24 @@ class EssenViewModel : ViewModel() {
     val essen: MutableLiveData<Essensplan> by lazy {
         MutableLiveData<Essensplan>()
     }
-    var mensa: Mensa? = null
-    set(newMensa) {
-        if(mensa != newMensa){
-            field = newMensa
-            if(mMensaplanCache[newMensa] != null){
-                essen.value = mMensaplanCache[newMensa]
+    val pref = PreferenceManager.getDefaultSharedPreferences(MensaViewer.mInstance)
+    var mensa: Mensa?
+        get(){
+            val mensaName = pref.getString(MensaViewer.res.getString(R.string.pref_selected_mensa), null)
+            return if(mensaName == null){
+                null
             } else {
-                forceReload()
+                Mensa.valueOf(mensaName)
             }
+        }
+    set(newMensa) {
+        if(mensa != newMensa && newMensa != null){
+            pref.edit().putString(MensaViewer.res.getString(R.string.pref_selected_mensa), newMensa.toString()).apply()
+        }
+        if(mMensaplanCache[newMensa] != null){
+            essen.value = mMensaplanCache[newMensa]
+        } else {
+            forceReload()
         }
     }
     val mMensaplanCache = HashMap<Mensa, Essensplan?>()
