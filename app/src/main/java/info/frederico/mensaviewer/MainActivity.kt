@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 swipe_container.isRefreshing = true
         }
         tv_error_message_internet.visibility = View.INVISIBLE
+        button_launch_settings_activity.visibility = View.INVISIBLE
         evModel.mensa = newMensa
     }
 
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         tv_error_message_internet.text = getString(R.string.error_message_navigation)
         my_recycler_view.visibility = View.INVISIBLE
         tv_error_message_internet.visibility = View.VISIBLE
+        button_launch_settings_activity.visibility = View.VISIBLE
         swipe_container.visibility = View.INVISIBLE
     }
 
@@ -132,6 +134,7 @@ class MainActivity : AppCompatActivity() {
      *  LiveData
      *  Preferences
      *  Navigation
+     *  Settings-Button
      */
     private fun setListener(){
         swipe_container.setOnRefreshListener {
@@ -158,10 +161,14 @@ class MainActivity : AppCompatActivity() {
                 swipe_container.isRefreshing = false
                 my_recycler_view.visibility = View.VISIBLE
                 tv_error_message_internet.visibility = View.INVISIBLE
+                button_launch_settings_activity.visibility = View.INVISIBLE
             }
         }
-
         evModel.essen.observe(this, essenObserver)
+
+        button_launch_settings_activity.setOnClickListener {
+            launchSettingsActivity()
+        }
     }
 
     /**
@@ -172,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         my_recycler_view.visibility = View.INVISIBLE
         swipe_container.isRefreshing = false
         tv_error_message_internet.visibility = View.VISIBLE
+        button_launch_settings_activity.visibility = View.INVISIBLE
     }
 
     /**
@@ -182,6 +190,7 @@ class MainActivity : AppCompatActivity() {
         my_recycler_view.visibility = View.INVISIBLE
         swipe_container.isRefreshing = false
         tv_error_message_internet.visibility = View.VISIBLE
+        button_launch_settings_activity.visibility = View.INVISIBLE
     }
 
     /**
@@ -254,13 +263,20 @@ class MainActivity : AppCompatActivity() {
                     return true
                 }
                 R.id.prefs -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
+                    launchSettingsActivity()
                     return true
                 }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Launches the SettingsActivity.
+     */
+    private fun launchSettingsActivity() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onFilterMenuItemSelected(item: MenuItem): Boolean {
