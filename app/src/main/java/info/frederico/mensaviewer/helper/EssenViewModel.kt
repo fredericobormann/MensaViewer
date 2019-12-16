@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.preference.PreferenceManager
+import android.util.Log
 import com.beust.klaxon.*
 import info.frederico.mensaviewer.MensaViewer
 import info.frederico.mensaviewer.R
@@ -58,6 +59,7 @@ class EssenViewModel : ViewModel() {
     fun forceReload() {
         UpdateMensaPlan().cancel(true)
         UpdateMensaPlan().execute(mensa)
+        UpdateOpeningTimes().execute(mensa)
     }
 
     /**
@@ -124,6 +126,28 @@ class EssenViewModel : ViewModel() {
                 essen.value = result
             }
             mMensaplanCache[loadingMensa!!] = result
+        }
+    }
+
+    private inner class UpdateOpeningTimes(): AsyncTask<Mensa?, Unit, String>(){
+        override fun doInBackground(vararg param: Mensa?): String {
+            if(param[0] == null){
+                return ""
+            }
+
+            val url = param[0]!!.urlInfo
+            val client = OkHttpClient()
+            val request = Request.Builder().url(url).build()
+            client.newCall(request).execute().use {
+                return it.body()?.string() ?: ""
+            }
+        }
+
+        override fun onPostExecute(result: String) {
+            super.onPostExecute(result)
+
+            mensa?.openingTimes = result
+            Log.d("TEST!!!", result)
         }
     }
 }

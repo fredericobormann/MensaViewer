@@ -32,4 +32,8 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/today/"
     val urlNextDay : String
     get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/tomorrow/"
+
+    val urlInfo : String
+    get() = "https://mensa.mafiasi.de/api/canteens/$number/"
+    var openingTimes: String = ""
 }
