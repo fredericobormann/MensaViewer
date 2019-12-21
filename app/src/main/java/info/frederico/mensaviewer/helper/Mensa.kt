@@ -35,5 +35,5 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
 
     val urlInfo : String
     get() = "https://mensa.mafiasi.de/api/canteens/$number/"
-    var openingTimes: String = ""
+    var openingTimes: OpeningTimes = OpeningTimes()
 }

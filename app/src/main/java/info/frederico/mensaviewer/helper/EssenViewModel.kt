@@ -5,10 +5,14 @@ import android.arch.lifecycle.ViewModel
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.preference.PreferenceManager
-import android.util.Log
-import com.beust.klaxon.*
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import com.beust.klaxon.Parser
 import info.frederico.mensaviewer.MensaViewer
 import info.frederico.mensaviewer.R
+import info.frederico.mensaviewer.helper.json.OpeningTimesConverter
+import info.frederico.mensaviewer.helper.json.PriceConverter
+import info.frederico.mensaviewer.helper.json.WeekdayConverter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.SocketTimeoutException
@@ -92,25 +96,7 @@ class EssenViewModel : ViewModel() {
 
         fun getEssenslisteByUrl(url: String): List<Essen>?{
             val client = OkHttpClient()
-            val priceConverter = object: Converter{
-                override fun canConvert(cls: Class<*>): Boolean {
-                    return cls == String::class.java
-                }
-
-                override fun fromJson(jv: JsonValue): Any? {
-                    val jsonString: String? = jv.string
-                    if (jsonString != null){
-                        return jsonString.replace(".", ",")+" €"
-                    }
-                    else{
-                        return null
-                    }
-                }
-
-                override fun toJson(value: Any): String {
-                    return ""
-                }
-            }
+            val priceConverter = PriceConverter()
 
             val request = Request.Builder()
                     .url(url)
@@ -129,25 +115,39 @@ class EssenViewModel : ViewModel() {
         }
     }
 
-    private inner class UpdateOpeningTimes(): AsyncTask<Mensa?, Unit, String>(){
-        override fun doInBackground(vararg param: Mensa?): String {
+    private inner class UpdateOpeningTimes(): AsyncTask<Mensa?, Unit, List<OpeningTime>?>(){
+        var loadingMensa: Mensa? = null
+        override fun doInBackground(vararg param: Mensa?): List<OpeningTime>? {
             if(param[0] == null){
-                return ""
+                return null
             }
 
-            val url = param[0]!!.urlInfo
+            loadingMensa = param[0]
+            val url = loadingMensa!!.urlInfo
             val client = OkHttpClient()
+            val openingTimesConverter = OpeningTimesConverter()
+            val weekdayConverter = WeekdayConverter()
+            val parser = Parser.default()
             val request = Request.Builder().url(url).build()
             client.newCall(request).execute().use {
-                return it.body()?.string() ?: ""
+                val stringBuilder = StringBuilder(it.body()?.string() ?: "")
+                val jsonObject = parser.parse(stringBuilder) as JsonObject
+                val jsonArray = jsonObject.array<OpeningTime>("opening_times")
+                return jsonArray?.let { it1 ->
+                    Klaxon()
+                            .fieldConverter(KlaxonWeekday::class, weekdayConverter)
+                            .fieldConverter(KlaxonOpeningTime::class, openingTimesConverter)
+                            .parseFromJsonArray(it1)
+                }
             }
         }
 
-        override fun onPostExecute(result: String) {
+        override fun onPostExecute(result: List<OpeningTime>?) {
             super.onPostExecute(result)
 
-            mensa?.openingTimes = result
-            Log.d("TEST!!!", result)
+            if(result != null){
+                loadingMensa?.openingTimes = OpeningTimes(result)
+            }
         }
     }
 }
