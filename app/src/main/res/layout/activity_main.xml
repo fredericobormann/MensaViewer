@@ -23,17 +23,33 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <TextView
-        android:id="@+id/tv_error_message_internet"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/error_message_internet"
-        android:textAlignment="center"
-        android:visibility="invisible"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/swipe_container"
         app:layout_constraintEnd_toEndOf="@+id/swipe_container"
         app:layout_constraintStart_toStartOf="@+id/swipe_container"
-        app:layout_constraintTop_toTopOf="@+id/swipe_container" />
+        app:layout_constraintTop_toTopOf="@+id/swipe_container">
+
+        <TextView
+            android:id="@+id/tv_error_message_internet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/error_message_internet"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button_launch_settings_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/prefs_open"
+            android:textColor="@color/colorAccent"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

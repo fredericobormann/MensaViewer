@@ -11,6 +11,7 @@
     <string name="pref_usergroup_employee">Bedienstete</string>
     <string name="pref_mensa_title">Mensa</string>
     <string name="prefs">Einstellungen</string>
+    <string name="prefs_open">Einstellungen öffnen</string>
     <string name= "today">Heute</string>
     <string name="show_all_dishes">alles anzeigen</string>
     <string name="show_only_vegetarian">nur vegetarisch</string>
