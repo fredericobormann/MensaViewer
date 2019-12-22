@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="licenses">Licenses</string>
+        <string name="licenses">Legal Infos</string>
     <string name="error_message_internet">Internet connection failed. Sorry!</string>
-    <string name="jsoup_license">Developed using okHttp: Copyright 2016 Square, Inc.\nand Klaxon: Copyright 2019 cbeust\n\nLicensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+    <string name="jsoup_license">Privacy Policy: https://frederico.info/mensaviewer/privacypolicy.html\n\nDeveloped using okHttp: Copyright 2016 Square, Inc.\nand Klaxon: Copyright 2019 cbeust\n\nLicensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
     <string name="error_message_data">No data available.</string>
     <string name="error_message_navigation">Please go to settings and select preferred canteens.</string>
     <string name="error_message_preferred_canteen_selection">Please choose at least one and at most four canteens.</string>
