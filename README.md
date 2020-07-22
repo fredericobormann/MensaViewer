@@ -6,7 +6,7 @@ to inform you about the food currently available at the University of Hamburg.
 If you notice anything or have a feature request for something that is not listed below,
 feel free to make a pull request or open an issue!
 
-The app is available in Google Play Store.
+The app is available [here](https://play.google.com/store/apps/details?id=info.frederico.mensaviewer "Mensa Viewer - Apps by Google Play") in the Google Play Store.
 
 ## Upcoming features
 * Optional analytics to collect stability data
