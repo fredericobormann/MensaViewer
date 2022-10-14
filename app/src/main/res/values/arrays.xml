@@ -12,42 +12,84 @@
         <item>@string/pref_mensa_armgartstrasseValue</item>
         <item>@string/pref_mensa_bergedorfValue</item>
         <item>@string/pref_mensa_berlinerTorValue</item>
+        <item>@string/pref_mensa_blattwerkValue</item>
         <item>@string/pref_mensa_botanischerGartenValue</item>
         <item>@string/pref_mensa_blsValue</item>
         <item>@string/pref_mensa_cafeAlexValue</item>
         <item>@string/pref_mensa_cafeBerlinerValue</item>
+        <item>@string/pref_mensa_campusblickValue</item>
+        <item>@string/pref_mensa_canelaValue</item>
         <item>@string/pref_mensa_cafeCfelValue</item>
+        <item>@string/pref_mensa_dellarteValue</item>
+        <item>@string/pref_mensa_cafeFinkenauValue</item>
+        <item>@string/pref_mensa_grindelValue</item>
+        <item>@string/pref_mensa_cafeHcuValue</item>
+        <item>@string/pref_mensa_cafeBotgartValue</item>
+        <item>@string/pref_mensa_cafeHarbValue</item>
         <item>@string/pref_mensa_cafeJungValue</item>
         <item>@string/pref_mensa_cafeMittelValue</item>
+        <item>@string/pref_mensa_studaffValue</item>
+        <item>@string/pref_mensa_zesspValue</item>
+        <item>@string/pref_mensa_cafeUeberseeValue</item>
+        <item>@string/pref_mensa_blueberryValue</item>
+        <item>@string/pref_mensa_cafeshopCampusValue</item>
+        <item>@string/pref_mensa_cafeshopGeomValue</item>
+        <item>@string/pref_mensa_zahnradValue</item>
         <item>@string/pref_mensa_campusValue</item>
+        <item>@string/pref_mensa_foodtruckValue</item>
+        <item>@string/pref_mensa_campuscafeValue</item>
         <item>@string/pref_mensa_desyValue</item>
         <item>@string/pref_mensa_finkenauValue</item>
         <item>@string/pref_mensa_geomatikumValue</item>
         <item>@string/pref_mensa_harburgValue</item>
         <item>@string/pref_mensa_hcuValue</item>
         <item>@string/pref_mensa_informatikumValue</item>
+        <item>@string/pref_mensa_pizzabarHarburgValue</item>
+        <item>@string/pref_mensa_schluetersValue</item>
         <item>@string/pref_mensa_studierendenhausValue</item>
+        <item>@string/pref_mensa_verkaufswMlkValue</item>
         <item>@string/pref_mensa_ueberseeringValue</item>
     </array>
     <array name="pref_mensa_entries">
         <item>@string/pref_mensa_armgartstrasse</item>
         <item>@string/pref_mensa_bergedorf</item>
         <item>@string/pref_mensa_berlinerTor</item>
+        <item>@string/pref_mensa_blattwerk</item>
         <item>@string/pref_mensa_botanischerGarten</item>
         <item>@string/pref_mensa_bls</item>
         <item>@string/pref_mensa_cafeAlex</item>
         <item>@string/pref_mensa_cafeBerliner</item>
+        <item>@string/pref_mensa_campusblick</item>
+        <item>@string/pref_mensa_canela</item>
         <item>@string/pref_mensa_cafeCfel</item>
+        <item>@string/pref_mensa_dellarte</item>
+        <item>@string/pref_mensa_cafeFinkenau</item>
+        <item>@string/pref_mensa_grindel</item>
+        <item>@string/pref_mensa_cafeHcu</item>
+        <item>@string/pref_mensa_cafeBotgart</item>
+        <item>@string/pref_mensa_cafeHarb</item>
         <item>@string/pref_mensa_cafeJung</item>
         <item>@string/pref_mensa_cafeMittel</item>
+        <item>@string/pref_mensa_studaff</item>
+        <item>@string/pref_mensa_zessp</item>
+        <item>@string/pref_mensa_cafeUebersee</item>
+        <item>@string/pref_mensa_blueberry</item>
+        <item>@string/pref_mensa_cafeshopCampus</item>
+        <item>@string/pref_mensa_cafeshopGeom</item>
+        <item>@string/pref_mensa_zahnrad</item>
         <item>@string/pref_mensa_campus</item>
+        <item>@string/pref_mensa_foodtruck</item>
+        <item>@string/pref_mensa_campuscafe</item>
         <item>@string/pref_mensa_desy</item>
         <item>@string/pref_mensa_finkenau</item>
         <item>@string/pref_mensa_geomatikum</item>
         <item>@string/pref_mensa_harburg</item>
         <item>@string/pref_mensa_hcu</item>
         <item>@string/pref_mensa_informatikum</item>
+        <item>@string/pref_mensa_pizzabarHarburg</item>
+        <item>@string/pref_mensa_schlueters</item>
         <item>@string/pref_mensa_studierendenhaus</item>
+        <item>@string/pref_mensa_verkaufswMlk</item>
         <item>@string/pref_mensa_ueberseering</item>
     </array>
     <array name="pref_mensa_default"></array>
