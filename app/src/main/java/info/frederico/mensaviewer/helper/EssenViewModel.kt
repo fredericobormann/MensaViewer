@@ -1,10 +1,12 @@
+@file:Suppress("DEPRECATION")
+
 package info.frederico.mensaviewer.helper
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
-import android.preference.PreferenceManager
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.preference.PreferenceManager
 import com.beust.klaxon.Converter
 import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
@@ -69,6 +71,7 @@ class EssenViewModel : ViewModel() {
     @SuppressLint("StaticFieldLeak")
     private inner class UpdateMensaPlan : AsyncTask<Mensa?, Unit, Essensplan?>(){
         var loadingMensa: Mensa? = null
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg param: Mensa?): Essensplan?{
             val essensplanToday: List<Essen>?
             val essensplanNextDay: List<Essen>?
@@ -119,12 +122,15 @@ class EssenViewModel : ViewModel() {
             }
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onPostExecute(result: Essensplan?) {
             super.onPostExecute(result)
-            if(mensa == loadingMensa){
+            if (mensa == loadingMensa){
                 essen.value = result
             }
-            mMensaplanCache[loadingMensa!!] = result
+            if (loadingMensa != null) {
+                mMensaplanCache[loadingMensa!!] = result
+            }
         }
     }
 }

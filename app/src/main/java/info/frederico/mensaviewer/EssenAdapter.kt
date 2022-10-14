@@ -2,8 +2,8 @@ package info.frederico.mensaviewer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.preference.PreferenceManager
-import android.support.v7.widget.RecyclerView
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
