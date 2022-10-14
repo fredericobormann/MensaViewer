@@ -1,5 +1,4 @@
 package info.frederico.mensaviewer.helper
 
-class EssenLoadingException: Exception() {
-
-}
+@Suppress("UNUSED")
+class EssenLoadingException: Exception()

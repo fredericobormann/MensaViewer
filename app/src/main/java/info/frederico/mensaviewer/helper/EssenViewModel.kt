@@ -1,11 +1,13 @@
 package info.frederico.mensaviewer.helper
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.preference.PreferenceManager
-import com.beust.klaxon.*
+import com.beust.klaxon.Converter
+import com.beust.klaxon.JsonValue
+import com.beust.klaxon.Klaxon
 import info.frederico.mensaviewer.MensaViewer
 import info.frederico.mensaviewer.R
 import okhttp3.OkHttpClient
@@ -16,7 +18,7 @@ class EssenViewModel : ViewModel() {
     val essen: MutableLiveData<Essensplan> by lazy {
         MutableLiveData<Essensplan>()
     }
-    val pref = PreferenceManager.getDefaultSharedPreferences(MensaViewer.mInstance)
+    private val pref = PreferenceManager.getDefaultSharedPreferences(MensaViewer.mInstance)!!
     var mensa: Mensa?
         get(){
             val mensaName = pref.getString(MensaViewer.res.getString(R.string.pref_selected_mensa), null)
@@ -64,12 +66,12 @@ class EssenViewModel : ViewModel() {
      * Asynchronous Task to load Mensa data from internet.
      * mensa LiveData will be null, if an error occurred.
      */
-    private inner class UpdateMensaPlan(): AsyncTask<Mensa?, Unit, Essensplan?>(){
+    @SuppressLint("StaticFieldLeak")
+    private inner class UpdateMensaPlan : AsyncTask<Mensa?, Unit, Essensplan?>(){
         var loadingMensa: Mensa? = null
         override fun doInBackground(vararg param: Mensa?): Essensplan?{
-            var essensplan: Essensplan?
-            var essensplanToday: List<Essen>?
-            var essensplanNextDay: List<Essen>?
+            val essensplanToday: List<Essen>?
+            val essensplanNextDay: List<Essen>?
 
             loadingMensa = param[0]
 
@@ -97,11 +99,10 @@ class EssenViewModel : ViewModel() {
 
                 override fun fromJson(jv: JsonValue): Any? {
                     val jsonString: String? = jv.string
-                    if (jsonString != null){
-                        return jsonString.replace(".", ",")+" €"
-                    }
-                    else{
-                        return null
+                    return if (jsonString != null){
+                        jsonString.replace(".", ",")+" €"
+                    } else{
+                        null
                     }
                 }
 
@@ -114,7 +115,7 @@ class EssenViewModel : ViewModel() {
                     .url(url)
                     .build()
             client.newCall(request).execute().use {
-                return Klaxon().fieldConverter(KlaxonPrice::class, priceConverter).parseArray<Essen>(it.body()?.string() ?: "")
+                return Klaxon().fieldConverter(KlaxonPrice::class, priceConverter).parseArray(it.body.string())
             }
         }
 

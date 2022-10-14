@@ -1,5 +1,6 @@
 package info.frederico.mensaviewer
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private fun reactToNavSelection(item: MenuItem): Boolean{
         if(viewIdMensaMap.containsKey(item.itemId)) {
             recyclerView.visibility = View.INVISIBLE
-            changeSelectedMensa(viewIdMensaMap.get(item.itemId) ?: Mensa.STUDIERENDENHAUS)
+            changeSelectedMensa(viewIdMensaMap[item.itemId] ?: Mensa.STUDIERENDENHAUS)
             return true
         }
 
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             sharedPreferencesChanged(key)
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeNavigation() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
-        var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), resources.getStringArray(R.array.pref_mensa_default).toSet())
+        val selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), resources.getStringArray(R.array.pref_mensa_default).toSet())!!
         if(selectedMensas.isEmpty()){
             throw NavigationInvalidException()
         } else {
@@ -218,6 +219,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Reacts to Preference changes.
      */
+    @SuppressLint("NotifyDataSetChanged")
     private fun sharedPreferencesChanged(key: String?) {
         when (key ?: "") {
             getString(R.string.pref_usergroup) -> {
@@ -251,11 +253,11 @@ class MainActivity : AppCompatActivity() {
         if (item != null) {
             when (item.itemId) {
                 R.id.filter -> {
-                    val filterMenu = PopupMenu(this, findViewById(R.id.filter)).apply {
+                    PopupMenu(this, findViewById(R.id.filter)).apply {
                         inflate(R.menu.filter_menu)
                         setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
                         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
-                        val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString()))
+                        val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString())!!)
                         menu.getItem(selectedItem.ordinal).isChecked = true
                         show()
                     }

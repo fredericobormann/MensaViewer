@@ -16,11 +16,10 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     private fun updateSummary(pref : Preference) {
-        if(pref is ListPreference){
-            val listPref = pref as ListPreference
-            pref.summary = listPref.entry
+        if (pref is ListPreference) {
+            pref.summary = pref.entry
         }
-        else if (pref is MultiSelectListPreference && !pref.values.isEmpty()) {
+        else if (pref is MultiSelectListPreference && pref.values.isNotEmpty()) {
             pref.summary = createMultiSelectedListPreferenceSummary(pref)
         }
     }

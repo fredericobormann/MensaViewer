@@ -1,6 +1,5 @@
 package info.frederico.mensaviewer.helper
 import com.beust.klaxon.Json
-import com.beust.klaxon.Klaxon
 
 @Target(AnnotationTarget.FIELD)
 annotation class KlaxonPrice

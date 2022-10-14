@@ -5,14 +5,14 @@ import info.frederico.mensaviewer.R
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
-class Essensplan(val today: List<Essen>? = ArrayList(), val nextday: List<Essen>? = ArrayList()){
-    val jsonDateFormat = SimpleDateFormat("yyyy-MM-dd")
-    val outputDateFormat = SimpleDateFormat("EEEE, d. MMMM")
-    val outputDateFormatWithoutWeekday = SimpleDateFormat("d. MMMM")
+class Essensplan(private val today: List<Essen>? = ArrayList(), private val nextday: List<Essen>? = ArrayList()){
+    private val jsonDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val outputDateFormat = SimpleDateFormat("EEEE, d. MMMM")
+    private val outputDateFormatWithoutWeekday = SimpleDateFormat("d. MMMM")
 
     fun getViewableEssensplan(veggieFilterOption: VeggieFilterOption): List<ViewableEssenElement>{
         val viewableEssensplan: MutableList<ViewableEssenElement> = ArrayList()
-        if (today != null && !today.isEmpty()){
+        if (today != null && today.isNotEmpty()){
             val dateOfToday = jsonDateFormat.parse(today[0].date)
             viewableEssensplan.add(ViewableDateElement(MensaViewer.res.getString(R.string.today) + ", " + outputDateFormatWithoutWeekday.format(dateOfToday)))
             val todayFiltered = today.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }
@@ -21,7 +21,7 @@ class Essensplan(val today: List<Essen>? = ArrayList(), val nextday: List<Essen>
                 viewableEssensplan.add(ViewableTextElement(MensaViewer.res.getString(R.string.no_result_filter_message)))
             }
         }
-        if (nextday != null && !nextday.isEmpty()){
+        if (nextday != null && nextday.isNotEmpty()){
             val dateOfNextDay = jsonDateFormat.parse(nextday[0].date)
             viewableEssensplan.add(ViewableDateElement(outputDateFormat.format(dateOfNextDay)))
             val nextdayFiltered = nextday.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }

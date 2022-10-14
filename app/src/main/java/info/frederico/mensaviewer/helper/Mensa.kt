@@ -6,7 +6,7 @@ import info.frederico.mensaviewer.R
 /**
  * Created by fredd on 14.07.2018.
  */
-enum class Mensa(val description : String, val icon : Int, val navigationViewId : Int, val number : Int) {
+enum class Mensa(val description : String, val icon : Int, val navigationViewId : Int, private val number : Int) {
     ARMGARTSTRASSE("Armgartstraße", R.drawable.ic_baseline_a_24px, View.generateViewId(), 15),
     BERGEDORF("Bergedorf", R.drawable.ic_baseline_b_24px, View.generateViewId(), 1),
     BERLINERTOR("Berliner Tor", R.drawable.ic_baseline_b_24px, View.generateViewId(), 12),
@@ -49,7 +49,7 @@ enum class Mensa(val description : String, val icon : Int, val navigationViewId 
     UEBERSEE("Überseering", R.drawable.ic_baseline_ue_24px, View.generateViewId(), 13);
 
     val urlToday : String
-    get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/today/"
+    get() = "https://mensa.mafiasi.de/api/canteens/$number/today/"
     val urlNextDay : String
-    get() = "https://mensa.mafiasi.de/api/canteens/" + number + "/tomorrow/"
+    get() = "https://mensa.mafiasi.de/api/canteens/$number/tomorrow/"
 }
