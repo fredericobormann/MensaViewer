@@ -3,17 +3,18 @@ package info.frederico.mensaviewer.helper
 import info.frederico.mensaviewer.MensaViewer
 import info.frederico.mensaviewer.R
 import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 class Essensplan(private val today: List<Essen>? = ArrayList(), private val nextday: List<Essen>? = ArrayList()){
-    private val jsonDateFormat = SimpleDateFormat("yyyy-MM-dd")
-    private val outputDateFormat = SimpleDateFormat("EEEE, d. MMMM")
-    private val outputDateFormatWithoutWeekday = SimpleDateFormat("d. MMMM")
+    private val jsonDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat("EEEE, d. MMMM", Locale.GERMANY)
+    private val outputDateFormatWithoutWeekday = SimpleDateFormat("d. MMMM", Locale.GERMANY)
 
     fun getViewableEssensplan(veggieFilterOption: VeggieFilterOption): List<ViewableEssenElement>{
         val viewableEssensplan: MutableList<ViewableEssenElement> = ArrayList()
         if (today != null && today.isNotEmpty()){
-            val dateOfToday = jsonDateFormat.parse(today[0].date)
+            val dateOfToday = jsonDateFormat.parse(today[0].date)!!
             viewableEssensplan.add(ViewableDateElement(MensaViewer.res.getString(R.string.today) + ", " + outputDateFormatWithoutWeekday.format(dateOfToday)))
             val todayFiltered = today.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }
             viewableEssensplan.addAll(todayFiltered)
@@ -22,7 +23,7 @@ class Essensplan(private val today: List<Essen>? = ArrayList(), private val next
             }
         }
         if (nextday != null && nextday.isNotEmpty()){
-            val dateOfNextDay = jsonDateFormat.parse(nextday[0].date)
+            val dateOfNextDay = jsonDateFormat.parse(nextday[0].date)!!
             viewableEssensplan.add(ViewableDateElement(outputDateFormat.format(dateOfNextDay)))
             val nextdayFiltered = nextday.filter { essen -> checkIfEssenMatchesFilter(essen, veggieFilterOption) }
             viewableEssensplan.addAll(nextdayFiltered)
