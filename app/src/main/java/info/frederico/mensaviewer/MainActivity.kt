@@ -85,6 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         finally {
             setListener()
+            swipe_container.isRefreshing = true
+            evModel.forceReload()
         }
     }
 
