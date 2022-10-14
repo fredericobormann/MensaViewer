@@ -54,7 +54,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           set -e
-          mv app/build/outputs/apk/release/app-release-signed.apk mensa-viewer-v${{ env.VERSION_TAG }}.apk
+          mv app/build/outputs/apk/release/app-release-unsigned-signed.apk mensa-viewer-v${{ env.VERSION_TAG }}.apk
           sha=`sha256sum mensa-viewer-v${{ env.VERSION_TAG }}.apk | awk '{ print $1 }'`
           echo "APK_SHA=$sha" >> $GITHUB_ENV
       - name: Create Release
