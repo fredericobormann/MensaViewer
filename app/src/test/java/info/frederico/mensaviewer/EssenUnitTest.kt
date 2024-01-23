@@ -1,12 +1,9 @@
 package info.frederico.mensaviewer
 
-import com.beust.klaxon.JsonArray
-import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Klaxon
 import info.frederico.mensaviewer.helper.Essen
-import org.junit.Test
-
 import org.junit.Assert.*
+import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).

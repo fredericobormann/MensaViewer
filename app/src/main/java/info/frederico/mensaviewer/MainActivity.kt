@@ -1,19 +1,21 @@
 package info.frederico.mensaviewer
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import android.annotation.SuppressLint
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
-import android.support.v7.widget.RecyclerView
+import androidx.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.navigation.NavigationBarView
 import info.frederico.mensaviewer.helper.EssenViewModel
 import info.frederico.mensaviewer.helper.Essensplan
 import info.frederico.mensaviewer.helper.Mensa
@@ -32,8 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewIdMensaMap: HashMap<Int, Mensa>
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        return@OnNavigationItemSelectedListener reactToNavSelection(item)
+    private val mOnNavigationItemSelectedListener = NavigationBarView.OnItemSelectedListener { item ->
+        return@OnItemSelectedListener reactToNavSelection(item)
     }
 
     /**
@@ -60,21 +62,21 @@ class MainActivity : AppCompatActivity() {
     private fun reactToNavSelection(item: MenuItem): Boolean{
         if(viewIdMensaMap.containsKey(item.itemId)) {
             recyclerView.visibility = View.INVISIBLE
-            changeSelectedMensa(viewIdMensaMap.get(item.itemId) ?: Mensa.STUDIERENDENHAUS)
+            changeSelectedMensa(viewIdMensaMap[item.itemId] ?: Mensa.STUDIERENDENHAUS)
             return true
         }
 
         return false
     }
 
-    private val mOnNavigationItemReselectedListener = BottomNavigationView.OnNavigationItemReselectedListener {}
+    private val mOnNavigationItemReselectedListener = NavigationBarView.OnItemReselectedListener {}
 
     /**
      * Create the MainActivity.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        evModel = ViewModelProviders.of(this).get(EssenViewModel::class.java)
+        evModel = ViewModelProvider(this)[EssenViewModel::class.java]
 
         try {
             setLayout()
@@ -84,6 +86,8 @@ class MainActivity : AppCompatActivity() {
         }
         finally {
             setListener()
+            swipe_container.isRefreshing = true
+            evModel.forceReload()
         }
     }
 
@@ -141,20 +145,20 @@ class MainActivity : AppCompatActivity() {
             evModel.forceReload()
         }
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        navigation.setOnNavigationItemReselectedListener(mOnNavigationItemReselectedListener)
+        navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnItemReselectedListener(mOnNavigationItemReselectedListener)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             sharedPreferencesChanged(key)
         }
         preferences.registerOnSharedPreferenceChangeListener(prefListener)
 
-        val essenObserver = Observer<Essensplan>{ result ->
-            if(result == null){
+        val essenObserver = Observer<Essensplan>{ result: Essensplan? ->
+            if (viewIdMensaMap.isEmpty()) return@Observer
+            if (result == null){
                 showInternetConnectionMessage()
-            }
-            else if (result.isEmpty()) {
+            } else if (result.isEmpty()) {
                 showNoDataMessage()
             } else {
                 viewAdapter.setEssensplan(result)
@@ -199,7 +203,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeNavigation() {
         viewIdMensaMap = HashMap()
         navigation.menu.clear()
-        var selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), resources.getStringArray(R.array.pref_mensa_default).toSet())
+        val selectedMensas = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(getString(R.string.pref_mensa), emptySet())!!
         if(selectedMensas.isEmpty()){
             throw NavigationInvalidException()
         } else {
@@ -209,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         for (m in selectedMensas) {
             val mensa = Mensa.valueOf(m)
             val item = navigation.menu.add(0, mensa.navigationViewId, mensa.ordinal, mensa.description)
-            item.icon = getDrawable(mensa.icon)
+            item.icon = AppCompatResources.getDrawable(applicationContext, mensa.icon)
             viewIdMensaMap[item.itemId] = mensa
         }
         swipe_container.visibility = View.VISIBLE
@@ -218,6 +222,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Reacts to Preference changes.
      */
+    @SuppressLint("NotifyDataSetChanged")
     private fun sharedPreferencesChanged(key: String?) {
         when (key ?: "") {
             getString(R.string.pref_usergroup) -> {
@@ -247,28 +252,26 @@ class MainActivity : AppCompatActivity() {
     /**
      * Reacts to OptionsMenu selection.
      */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item != null) {
-            when (item.itemId) {
-                R.id.filter -> {
-                    val filterMenu = PopupMenu(this, findViewById(R.id.filter)).apply {
-                        inflate(R.menu.filter_menu)
-                        setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
-                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
-                        val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString()))
-                        menu.getItem(selectedItem.ordinal).isChecked = true
-                        show()
-                    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.filter -> {
+                PopupMenu(this, findViewById(R.id.filter)).apply {
+                    inflate(R.menu.filter_menu)
+                    setOnMenuItemClickListener { item -> onFilterMenuItemSelected(item) }
+                    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+                    val selectedItem = VeggieFilterOption.valueOf(sharedPreferences.getString(getString(R.string.pref_filter), VeggieFilterOption.SHOW_ALL_DISHES.toString())!!)
+                    menu.getItem(selectedItem.ordinal).isChecked = true
+                    show()
                 }
-                R.id.licenses -> {
-                    val intent = Intent(this, LicenseActivity::class.java)
-                    startActivity(intent)
-                    return true
-                }
-                R.id.prefs -> {
-                    launchSettingsActivity()
-                    return true
-                }
+            }
+            R.id.licenses -> {
+                val intent = Intent(this, LicenseActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.prefs -> {
+                launchSettingsActivity()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

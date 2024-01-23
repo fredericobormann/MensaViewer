@@ -1,5 +1,3 @@
 package info.frederico.mensaviewer
 
-class NavigationInvalidException : Exception() {
-
-}
+class NavigationInvalidException : Exception()

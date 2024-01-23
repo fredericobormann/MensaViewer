@@ -1,8 +1,9 @@
 package info.frederico.mensaviewer
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.preference.PreferenceManager
-import android.support.v7.widget.RecyclerView
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
@@ -22,10 +23,10 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class EssenViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     class DateViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     class TexteintragViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)!!
 
-    fun getVeggieFilterOption(): VeggieFilterOption{
-        return VeggieFilterOption.valueOf(sharedPreferences.getString(MensaViewer.res.getString(R.string.pref_filter),VeggieFilterOption.SHOW_ALL_DISHES.toString()))
+    private fun getVeggieFilterOption(): VeggieFilterOption{
+        return VeggieFilterOption.valueOf(sharedPreferences.getString(MensaViewer.res.getString(R.string.pref_filter),VeggieFilterOption.SHOW_ALL_DISHES.toString())!!)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -42,20 +43,24 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0){
-            // create a new view
-            val essenseintragView = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            0 -> {
+                // create a new view
+                val essenseintragView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.essenseintrag_view, parent, false)
-            // set the view's size, margins, paddings and layout parameters
-            return EssenViewHolder(essenseintragView)
-        } else if (viewType == 1){
-            val datumseintragView = LayoutInflater.from(parent.context)
+                // set the view's size, margins, paddings and layout parameters
+                EssenViewHolder(essenseintragView)
+            }
+            1 -> {
+                val datumseintragView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.datumseintrag_view, parent, false)
-            return DateViewHolder(datumseintragView)
-        } else {
-            val texteintragView = LayoutInflater.from(parent.context)
+                DateViewHolder(datumseintragView)
+            }
+            else -> {
+                val texteintragView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.texteintrag_view, parent, false)
-            return TexteintragViewHolder(texteintragView)
+                TexteintragViewHolder(texteintragView)
+            }
         }
     }
 
@@ -96,7 +101,7 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun hideBottomLineIfNecessary(lineTextView: TextView, position: Int, viewableEssensplan: List<ViewableEssenElement>){
+    private fun hideBottomLineIfNecessary(lineTextView: TextView, position: Int, viewableEssensplan: List<ViewableEssenElement>){
         if(position+1 == viewableEssensplan.size || viewableEssensplan[position+1] is ViewableDateElement){
             lineTextView.visibility = View.INVISIBLE
         } else{
@@ -104,23 +109,24 @@ RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun showVegetarianIcon(essenViewHolder: EssenViewHolder){
+    private fun showVegetarianIcon(essenViewHolder: EssenViewHolder){
         essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegetarian)
         essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
     }
 
-    fun showVeganIcon(essenViewHolder: EssenViewHolder){
+    private fun showVeganIcon(essenViewHolder: EssenViewHolder){
         essenViewHolder.view.veggieImageView.setImageResource(R.drawable.ic_vegan)
         essenViewHolder.view.veggieImageView.visibility = View.VISIBLE
     }
 
-    fun hideVeggieIcon(essenViewHolder: EssenViewHolder){
+    private fun hideVeggieIcon(essenViewHolder: EssenViewHolder){
         essenViewHolder.view.veggieImageView.visibility = View.INVISIBLE
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = essensplan.getViewableEssensplan(getVeggieFilterOption()).size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setEssensplan(newEssensplan : Essensplan){
         essensplan = newEssensplan
         notifyDataSetChanged()

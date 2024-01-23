@@ -48,6 +48,27 @@
     <string name="pref_mensa_hcuValue" translatable="false">HCU</string>
     <string name="pref_mensa_ueberseeringValue" translatable="false">UEBERSEE</string>
     <string name="pref_mensa_desyValue" translatable="false">DESY</string>
+    <string name="pref_mensa_blattwerkValue" translatable="false">BLATTWERK"</string>
+    <string name="pref_mensa_campusblickValue" translatable="false">CAFECAMPUSBLICK</string>
+    <string name="pref_mensa_canelaValue" translatable="false">CAFECANELA</string>
+    <string name="pref_mensa_dellarteValue" translatable="false">CAFEDELLARTE</string>
+    <string name="pref_mensa_cafeFinkenauValue" translatable="false">CAFEFINKENAU</string>
+    <string name="pref_mensa_grindelValue" translatable="false">CAFEGRINDEL</string>
+    <string name="pref_mensa_cafeHcuValue" translatable="false">CAFEHCU</string>
+    <string name="pref_mensa_cafeBotgartValue" translatable="false">CAFEINSGBOT</string>
+    <string name="pref_mensa_cafeHarbValue" translatable="false">CAFEINSGHARBURG</string>
+    <string name="pref_mensa_studaffValue" translatable="false">CAFESTUDAFF</string>
+    <string name="pref_mensa_zesspValue" translatable="false">CAFEZESSP</string>
+    <string name="pref_mensa_cafeUeberseeValue" translatable="false">CAFEUEBERSEERING</string>
+    <string name="pref_mensa_blueberryValue" translatable="false">CAFESHOPBLUEBERRY</string>
+    <string name="pref_mensa_cafeshopCampusValue" translatable="false">CAFESHOPCAMPUS</string>
+    <string name="pref_mensa_cafeshopGeomValue" translatable="false">CAFESHOPGEOM</string>
+    <string name="pref_mensa_zahnradValue" translatable="false">CAFESHOPZAHNR</string>
+    <string name="pref_mensa_foodtruckValue" translatable="false">CAMPUSFOODTRUCK</string>
+    <string name="pref_mensa_campuscafeValue" translatable="false">CAPUSCAFE</string>
+    <string name="pref_mensa_pizzabarHarburgValue" translatable="false">PIZZABARHARBURG</string>
+    <string name="pref_mensa_schluetersValue" translatable="false">SCHLUETERSPIZZA</string>
+    <string name="pref_mensa_verkaufswMlkValue" translatable="false">VERKAUFSWAGENMLK</string>
 
     <string name="pref_mensa_studierendenhaus" translatable="false">Studierendenhaus</string>
     <string name="pref_mensa_informatikum" translatable="false">Informatikum</string>
@@ -68,6 +89,27 @@
     <string name="pref_mensa_hcu" translatable="false">HCU</string>
     <string name="pref_mensa_ueberseering" translatable="false">Überseering</string>
     <string name="pref_mensa_desy" translatable="false">DESY-Kantine</string>
+    <string name="pref_mensa_blattwerk" translatable="false">Blattwerk</string>
+    <string name="pref_mensa_campusblick" translatable="false">Café CampusBlick</string>
+    <string name="pref_mensa_canela" translatable="false">Café Canela</string>
+    <string name="pref_mensa_dellarte" translatable="false">Café dell´Arte</string>
+    <string name="pref_mensa_cafeFinkenau" translatable="false">Café Finkenau</string>
+    <string name="pref_mensa_grindel" translatable="false">Café Grindel</string>
+    <string name="pref_mensa_cafeHcu" translatable="false">Café HCU</string>
+    <string name="pref_mensa_cafeBotgart" translatable="false">Café insgrüne Botanischer Garten</string>
+    <string name="pref_mensa_cafeHarb" translatable="false">Café insgrüne Harburg</string>
+    <string name="pref_mensa_studaff" translatable="false">Café Student Affairs</string>
+    <string name="pref_mensa_zessp" translatable="false">Café ZessP</string>
+    <string name="pref_mensa_cafeUebersee" translatable="false">Café Überseering</string>
+    <string name="pref_mensa_blueberry" translatable="false">Café-Shop Blueberry</string>
+    <string name="pref_mensa_cafeshopCampus" translatable="false">Café-Shop Campus</string>
+    <string name="pref_mensa_cafeshopGeom" translatable="false">Café-Shop Geomatikum</string>
+    <string name="pref_mensa_zahnrad" translatable="false">Café-Shop Zahnrad</string>
+    <string name="pref_mensa_foodtruck" translatable="false">Campus Food Truck</string>
+    <string name="pref_mensa_campuscafe" translatable="false">CampusCafé</string>
+    <string name="pref_mensa_pizzabarHarburg" translatable="false">PizzaBar Harburg</string>
+    <string name="pref_mensa_schlueters" translatable="false">Schlüters (Pizza &amp; More)</string>
+    <string name="pref_mensa_verkaufswMlk" translatable="false">Verkaufswagen am Martin-Luther-King-Platz</string>
     <string name="show_all_dishes">alles anzeigen</string>
     <string name="show_only_vegetarian">nur vegetarisch</string>
     <string name="show_only_vegan">nur vegan</string>
